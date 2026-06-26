@@ -162,6 +162,68 @@
 
     .pnote{margin-top:.9rem;font-size:.7rem;color:var(--text-3);text-align:center}
 
+    /* ── TECH GUIDE ── */
+    .tguide{background:var(--bg-card);border-bottom:1px solid var(--border)}
+    .tguide .wrap{padding-top:.55rem;padding-bottom:.55rem}
+    .tg-toggle{width:100%;background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:.75rem;padding:.45rem 0;color:var(--text)}
+    .tg-toggle:hover .tg-hint{color:var(--accent)}
+    .tg-badge{font-size:.6rem;font-weight:900;text-transform:uppercase;letter-spacing:.09em;padding:2px 7px;border-radius:3px;background:linear-gradient(135deg,#7c3aed,#3b82f6);color:#fff}
+    .tg-title{font-size:.82rem;font-weight:700}
+    .tg-hint{font-size:.75rem;color:var(--text-3);margin-left:auto;transition:color .15s}
+    .tg-chevron{font-size:.7rem;color:var(--text-3);transition:transform .25s}
+    .tg-chevron.open{transform:rotate(180deg)}
+
+    .tg-panel{display:none;padding:.9rem 0 1.1rem}
+    .tg-panel.open{display:block}
+
+    .tg-grid{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:0;align-items:stretch}
+    .tg-col{border:1px solid var(--border2);border-radius:var(--r);padding:.9rem 1rem;display:flex;flex-direction:column;gap:.5rem}
+    .tg-col-qd{border-color:var(--border2)}
+    .tg-col-sqd{border-color:#7c3aed;background:rgba(124,58,237,.04)}
+    .tg-col-rgb{border-color:#ef4444;background:rgba(239,68,68,.04)}
+
+    .tg-arrow-col{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 .6rem;gap:.25rem}
+    .tg-arrow-line{width:1px;flex:1;background:var(--border2)}
+    .tg-arrow-txt{font-size:.58rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--text-3);writing-mode:vertical-rl;text-orientation:mixed;white-space:nowrap}
+    .tg-arrow-head{color:var(--text-3);font-size:.7rem}
+
+    .tg-tier{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--text-3)}
+    .tg-name{font-size:1rem;font-weight:900;letter-spacing:-.02em;line-height:1.1}
+    .tg-name-sqd{color:#a78bfa}
+    .tg-name-rgb{color:#f87171}
+    .tg-sub{font-size:.7rem;color:var(--text-3);font-style:italic}
+
+    .tg-list{list-style:none;display:flex;flex-direction:column;gap:.3rem;margin-top:.2rem}
+    .tg-list li{font-size:.72rem;color:var(--text-2);display:flex;align-items:flex-start;gap:.4rem;line-height:1.35}
+    .tg-list li::before{content:'○';color:var(--text-3);flex-shrink:0;font-size:.65rem;margin-top:.1rem}
+    .tg-list li.win::before{content:'✓';color:#10b981;font-weight:900}
+    .tg-list li.win{color:var(--text)}
+
+    .tg-gamut{margin-top:.4rem;padding:.45rem .6rem;border-radius:var(--r2);font-size:.68rem;font-weight:700;text-align:center}
+    .tg-gamut-qd{background:rgba(99,102,241,.1);color:#818cf8;border:1px solid rgba(99,102,241,.2)}
+    .tg-gamut-sqd{background:rgba(124,58,237,.12);color:#a78bfa;border:1px solid rgba(124,58,237,.3)}
+    .tg-gamut-rgb{background:rgba(239,68,68,.1);color:#f87171;border:1px solid rgba(239,68,68,.3)}
+
+    .tg-btinfo{margin-top:.85rem;padding:.6rem .85rem;background:var(--gold-bg);border:1px solid rgba(245,158,11,.2);border-radius:var(--r2);font-size:.72rem;color:var(--text-2);line-height:1.5}
+    .tg-btinfo strong{color:var(--gold)}
+
+    @media(max-width:780px){
+      .tg-grid{grid-template-columns:1fr;grid-template-rows:auto}
+      .tg-arrow-col{flex-direction:row;padding:.3rem 0;writing-mode:initial}
+      .tg-arrow-line{width:auto;height:1px;flex:1}
+      .tg-arrow-txt{writing-mode:initial}
+    }
+
+    /* card color gamut line */
+    .cgamut{display:flex;align-items:center;gap:.4rem;padding:.35rem .5rem;border-radius:var(--r2);font-size:.68rem;font-weight:700}
+    .cgamut-qd{background:rgba(99,102,241,.08);color:#818cf8;border:1px solid rgba(99,102,241,.18)}
+    .cgamut-sqd{background:rgba(124,58,237,.1);color:#a78bfa;border:1px solid rgba(124,58,237,.25)}
+    .cgamut-rgb{background:rgba(239,68,68,.08);color:#f87171;border:1px solid rgba(239,68,68,.22)}
+    .cgamut-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+    .cgamut-qd .cgamut-dot{background:#818cf8}
+    .cgamut-sqd .cgamut-dot{background:#a78bfa}
+    .cgamut-rgb .cgamut-dot{background:#f87171}
+
     /* ── NO RESULTS ── */
     .nores{grid-column:1/-1;text-align:center;padding:4rem 2rem;color:var(--text-3)}
 
@@ -267,6 +329,97 @@
   </div>
 </nav>
 
+<section class="tguide" id="tguide">
+  <div class="wrap">
+    <button class="tg-toggle" id="tg-toggle" aria-expanded="false" aria-controls="tg-panel">
+      <span class="tg-badge">Tech Guide</span>
+      <span class="tg-title">Why SQD Mini-LED is Superior to QD-Mini LED</span>
+      <span class="tg-hint">Click to expand</span>
+      <span class="tg-chevron" id="tg-chevron">▼</span>
+    </button>
+    <div class="tg-panel" id="tg-panel" role="region">
+      <div class="tg-grid">
+
+        <!-- QD-Mini LED column -->
+        <div class="tg-col tg-col-qd">
+          <div class="tg-tier">2025 · Standard</div>
+          <div class="tg-name">QD-Mini LED</div>
+          <div class="tg-sub">Models: QM6K, QM7K, QM8K, QM9K</div>
+          <ul class="tg-list">
+            <li>Standard Quantum Dot color filter</li>
+            <li>~97% DCI-P3 color gamut coverage</li>
+            <li>16-bit backlight controller</li>
+            <li>Halo Control dimming algorithm</li>
+            <li>65,536 dimming steps per zone</li>
+            <li>Visible blooming on bright highlights</li>
+          </ul>
+          <div class="tg-gamut tg-gamut-qd">~97% DCI-P3</div>
+        </div>
+
+        <!-- Arrow: QD → SQD -->
+        <div class="tg-arrow-col">
+          <div class="tg-arrow-line"></div>
+          <div class="tg-arrow-txt">Upgrade</div>
+          <div class="tg-arrow-head">▶</div>
+          <div class="tg-arrow-line"></div>
+        </div>
+
+        <!-- SQD Mini-LED column -->
+        <div class="tg-col tg-col-sqd">
+          <div class="tg-tier">2026 · Advanced</div>
+          <div class="tg-name tg-name-sqd">SQD Mini-LED</div>
+          <div class="tg-sub">Models: QM7L, QM8L, X11</div>
+          <ul class="tg-list">
+            <li class="win">Super Quantum Dots + CSOT Ultra Color Filter</li>
+            <li class="win">100% BT.2020 color gamut — wider than DCI-P3</li>
+            <li class="win">26-bit backlight controller (67M dimming steps)</li>
+            <li class="win">TSR AI Processor for adaptive scene optimization</li>
+            <li class="win">4× more color volume vs standard QD filter</li>
+            <li class="win">Dramatically reduced color crosstalk</li>
+          </ul>
+          <div class="tg-gamut tg-gamut-sqd">100% BT.2020 (Widest Color)</div>
+        </div>
+
+        <!-- Arrow: SQD → RGB -->
+        <div class="tg-arrow-col">
+          <div class="tg-arrow-line"></div>
+          <div class="tg-arrow-txt">Ultimate</div>
+          <div class="tg-arrow-head">▶</div>
+          <div class="tg-arrow-line"></div>
+        </div>
+
+        <!-- RGB Mini-LED column -->
+        <div class="tg-col tg-col-rgb">
+          <div class="tg-tier">2026 · Flagship</div>
+          <div class="tg-name tg-name-rgb">RGB Mini-LED</div>
+          <div class="tg-sub">Model: RM9L</div>
+          <ul class="tg-list">
+            <li class="win">Narrow Band RGB Ultra LEDs — no filter needed</li>
+            <li class="win">100% BT.2020 with zero filter light loss</li>
+            <li class="win">30-bit backlight controller (1B dimming steps)</li>
+            <li class="win">TSR AI Processor — same as SQD flagship tier</li>
+            <li class="win">Maximum achievable brightness per watt</li>
+            <li class="win">Zero color crosstalk between R, G, B channels</li>
+          </ul>
+          <div class="tg-gamut tg-gamut-rgb">100% BT.2020 · Zero Crosstalk</div>
+        </div>
+
+      </div>
+
+      <div class="tg-btinfo">
+        <strong>Backlight Controller Bits Explained:</strong> The bit-depth of the backlight controller determines how many distinct dimming steps each zone can produce.
+        QD-Mini LED's 16-bit controller offers 65,536 steps per zone.
+        SQD Mini-LED's 26-bit controller delivers over 67 million steps — meaning far smoother gradients from pure black to peak brightness, eliminating visible banding and crush artifacts.
+        RGB Mini-LED takes this further with a 30-bit controller (1 billion steps), the highest precision available in any consumer display.
+        <br><br>
+        <strong>TSR AI Processor:</strong> Exclusive to SQD and RGB Mini-LED models, the TSR (Temporal Super Resolution) AI chip analyzes each frame in real time, intelligently mapping backlight zones, enhancing upscaling, reducing motion blur, and applying per-scene HDR tone mapping that static algorithms cannot match.
+        <br><br>
+        <strong>BT.2020 vs DCI-P3:</strong> BT.2020 is the next-generation color standard that covers roughly 75% of all visible human color perception — significantly wider than DCI-P3 (~69%). Standard QLED and QD-Mini LED panels cover only ~97% of the smaller DCI-P3 space. SQD and RGB Mini-LED achieve 100% of the larger BT.2020 standard, unlocking colors that simply cannot be reproduced on previous-generation displays.
+      </div>
+    </div>
+  </div>
+</section>
+
 <main>
   <div class="wrap">
     <div class="rbar"><p id="rcount" aria-live="polite">Showing 9 models</p></div>
@@ -304,6 +457,7 @@ const TVS = [
     nits:1500, audioW:20, audioSys:'2.0 ch', audioBrand:null,
     os:'Google TV', sizes:[43,50,55,65,75,85],
     gaming:false,
+    colorGamut:'~90% DCI-P3', processor:'Standard', backlightBits:12,
     note:'Entry-level QLED with up to 500 local dimming zones'
   },
   {
@@ -314,6 +468,7 @@ const TVS = [
     nits:2600, audioW:30, audioSys:'2.0 ch', audioBrand:null,
     os:'Google TV', sizes:[43,50,55,65,75,85,98],
     gaming:true,
+    colorGamut:'~97% DCI-P3', processor:'Halo Control', backlightBits:16,
     note:'QD-Mini LED with Halo Control System to minimize blooming'
   },
   {
@@ -324,6 +479,7 @@ const TVS = [
     nits:3000, audioW:40, audioSys:'2.1 ch', audioBrand:null,
     os:'Google TV', sizes:[55,65,75,85],
     gaming:true,
+    colorGamut:'~97% DCI-P3', processor:'Halo Control', backlightBits:16,
     note:'Anti-reflective CrystGlow HVA panel · 2,500 dimming zones'
   },
   {
@@ -334,6 +490,7 @@ const TVS = [
     nits:5000, audioW:60, audioSys:'2.1 ch Atmos', audioBrand:'Bang & Olufsen',
     os:'Google TV', sizes:[55,65,75,85,98],
     gaming:true,
+    colorGamut:'~97% DCI-P3', processor:'Halo Control', backlightBits:16,
     note:'5,000+ dimming zones · Bang & Olufsen premium audio'
   },
   {
@@ -344,6 +501,7 @@ const TVS = [
     nits:6500, audioW:70, audioSys:'2.1 ch Atmos', audioBrand:'Bang & Olufsen',
     os:'Google TV', sizes:[65,75,85,98],
     gaming:true,
+    colorGamut:'~97% DCI-P3', processor:'Halo Control', backlightBits:16,
     note:'2025 flagship · 6,500 nits peak · advanced Halo Control System'
   },
   {
@@ -354,6 +512,7 @@ const TVS = [
     nits:3000, audioW:40, audioSys:'2.1 ch AtmosConnect', audioBrand:'Bang & Olufsen',
     os:'Google TV', sizes:[55,65,75,85],
     gaming:true,
+    colorGamut:'100% BT.2020', processor:'TSR AI', backlightBits:26,
     note:'SQD Mini-LED · HVA 2.0 Pro Panel · 2,100+ zones · B&O audio'
   },
   {
@@ -364,6 +523,7 @@ const TVS = [
     nits:6000, audioW:60, audioSys:'2.1 ch Atmos FlexConnect', audioBrand:'Bang & Olufsen',
     os:'Google TV', sizes:[55,65,75,85,98],
     gaming:true,
+    colorGamut:'100% BT.2020', processor:'TSR AI', backlightBits:26,
     note:'SQD Mini-LED · WHVA 2.0 Ultra Panel · Dolby Vision 2.0 Max · 4,000+ zones'
   },
   {
@@ -374,6 +534,7 @@ const TVS = [
     nits:9000, audioW:80, audioSys:'2.1 ch Atmos', audioBrand:null,
     os:'Google TV', sizes:[85,98,115],
     gaming:true,
+    colorGamut:'100% BT.2020', processor:'TSR AI', backlightBits:30,
     note:'RGB Mini-LED · Narrow Band RGB Ultra LEDs · 100% BT.2020 · up to 115"'
   },
   {
@@ -384,6 +545,7 @@ const TVS = [
     nits:10000, audioW:100, audioSys:'2.1 ch Atmos + Soundbar', audioBrand:'Bang & Olufsen',
     os:'Google TV', sizes:[75,85,98],
     gaming:true,
+    colorGamut:'100% BT.2020', processor:'TSR AI', backlightBits:26,
     note:'8K SQD Mini-LED · WHVA 2.0 Ultra Panel · B&O soundbar + up-firing Atmos'
   }
 ];
@@ -407,6 +569,9 @@ const ROWS = [
   { lbl:'HDR Formats',         get:t=>({pills:t.hdr,num:t.hdr.length}),                    best:1 },
   { lbl:'Audio System',        get:t=>({txt:t.audioW+'W '+t.audioSys+(t.audioBrand?' · '+t.audioBrand:''),num:t.audioW}), best:1 },
   { lbl:'Available Sizes',     get:t=>({sizes:t.sizes}),                                   best:null },
+  { lbl:'Color Gamut',         get:t=>({txt:t.colorGamut}),                                best:null },
+  { lbl:'AI Processor',        get:t=>({txt:t.processor}),                                 best:null },
+  { lbl:'Backlight Controller',get:t=>({txt:t.backlightBits+'-bit',num:t.backlightBits}),  best:1 },
   { lbl:'Smart OS',            get:t=>({txt:t.os}),                                        best:null },
   { lbl:'Model Year',          get:t=>({txt:String(t.year),num:t.year}),                   best:null },
 ];
@@ -414,6 +579,18 @@ const ROWS = [
 // ─── HELPERS ─────────────────────────────────────────────────────────────────
 const $ = id => document.getElementById(id);
 const byId = id => TVS.find(t=>t.id===id);
+
+function gamutCls(t){
+  if(t.panel==='RGB Mini-LED') return 'cgamut-rgb';
+  if(t.panel==='SQD Mini-LED') return 'cgamut-sqd';
+  if(t.panel==='QD-Mini LED')  return 'cgamut-qd';
+  return 'cgamut-qd';
+}
+
+function gamutBadge(t){
+  const cls=gamutCls(t);
+  return `<div class="cgamut ${cls}"><span class="cgamut-dot"></span>${t.colorGamut}</div>`;
+}
 
 function bestIdx(vals, dir) {
   const ns = vals.map((v,i)=>({v,i})).filter(x=>x.v!=null&&!isNaN(x.v));
@@ -489,6 +666,7 @@ function renderCards(){
         <div><div class="cmodel">${t.model}</div><div class="csub">${t.series} &middot; ${t.year}</div></div>
       </div>
       <div class="bdg-row">${cardBadges(t)}</div>
+      ${gamutBadge(t)}
       <div class="sg">
         <div class="si"><span class="sk">Resolution</span><span class="sv${t.resolution==='8K'?' gold':''}">${t.resolution} UHD</span></div>
         <div class="si"><span class="sk">Refresh Rate</span><span class="sv${t.hz>=144?' hi':''}">${t.hz}Hz</span></div>
@@ -584,6 +762,17 @@ function clearF(){
   render();
 }
 
+// ─── TECH GUIDE TOGGLE ───────────────────────────────────────────────────────
+function tgToggle(){
+  const panel=$('tg-panel');
+  const btn=$('tg-toggle');
+  const chev=$('tg-chevron');
+  const open=panel.classList.toggle('open');
+  btn.setAttribute('aria-expanded', open);
+  chev.classList.toggle('open', open);
+  btn.querySelector('.tg-hint').textContent=open?'Click to collapse':'Click to expand';
+}
+
 // ─── THEME ───────────────────────────────────────────────────────────────────
 function setTheme(t){
   S.theme=t;
@@ -603,6 +792,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   setupFG('fg-year',  'year');
   setupFG('fg-gaming','gaming');
 
+  $('tg-toggle').addEventListener('click', tgToggle);
   $('sort-sel').addEventListener('change',e=>{ S.sort=e.target.value; render(); });
   $('clr-btn').addEventListener('click',clearF);
 
