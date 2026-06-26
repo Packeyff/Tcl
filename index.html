@@ -111,9 +111,6 @@
     .hpill{font-size:.58rem;font-weight:700;padding:2px 6px;border-radius:4px;background:rgba(59,130,246,.1);color:#60a5fa;border:1px solid rgba(59,130,246,.2)}
     .spill{font-size:.65rem;font-weight:600;padding:2px 6px;border-radius:4px;background:var(--bg);border:1px solid var(--border2);color:var(--text-2)}
 
-    .price{font-size:.8rem;color:var(--text-2)}
-    .price strong{color:var(--text);font-size:.9rem}
-
     .cbtn{margin-top:auto;background:transparent;border:1px solid var(--accent);border-radius:var(--r2);color:var(--accent);font-size:.78rem;font-weight:700;padding:.48rem;cursor:pointer;transition:all .14s;width:100%;display:flex;align-items:center;justify-content:center;gap:.32rem}
     .cbtn:hover:not(:disabled){background:var(--accent);color:#fff}
     .cbtn.on{background:var(--accent);color:#fff}
@@ -262,8 +259,6 @@
         <option value="model-asc">Model A–Z</option>
         <option value="year-asc">Year (Old–New)</option>
         <option value="year-desc">Year (New–Old)</option>
-        <option value="price-asc">Price: Low–High</option>
-        <option value="price-desc">Price: High–Low</option>
         <option value="nits-desc">Brightness ↓</option>
         <option value="zones-desc">Dimming Zones ↓</option>
       </select>
@@ -282,7 +277,7 @@
       <div class="cscroll">
         <div class="ctable" id="ctable"></div>
       </div>
-      <p class="pnote">* Prices are approximate starting prices (USD). Specs based on official TCL listings; dimming zone counts for QM9K are estimated. Nit values reflect advertised peak brightness on small HDR highlight windows.</p>
+      <p class="pnote">* Specs based on official TCL listings. Dimming zone counts for QM9K are estimated. Nit values reflect advertised peak brightness on small HDR highlight windows.</p>
     </section>
   </div>
 </main>
@@ -308,7 +303,7 @@ const TVS = [
     hdmiPorts:4, hdmiVer:2.0, zones:500,
     nits:1500, audioW:20, audioSys:'2.0 ch', audioBrand:null,
     os:'Google TV', sizes:[43,50,55,65,75,85],
-    price:{lo:599,hi:1199}, gaming:false,
+    gaming:false,
     note:'Entry-level QLED with up to 500 local dimming zones'
   },
   {
@@ -318,7 +313,7 @@ const TVS = [
     hdmiPorts:4, hdmiVer:2.1, zones:500,
     nits:2600, audioW:30, audioSys:'2.0 ch', audioBrand:null,
     os:'Google TV', sizes:[43,50,55,65,75,85,98],
-    price:{lo:449,hi:1099}, gaming:true,
+    gaming:true,
     note:'QD-Mini LED with Halo Control System to minimize blooming'
   },
   {
@@ -328,7 +323,7 @@ const TVS = [
     hdmiPorts:4, hdmiVer:2.1, zones:2500,
     nits:3000, audioW:40, audioSys:'2.1 ch', audioBrand:null,
     os:'Google TV', sizes:[55,65,75,85],
-    price:{lo:499,hi:1299}, gaming:true,
+    gaming:true,
     note:'Anti-reflective CrystGlow HVA panel · 2,500 dimming zones'
   },
   {
@@ -338,7 +333,7 @@ const TVS = [
     hdmiPorts:4, hdmiVer:2.1, zones:5000,
     nits:5000, audioW:60, audioSys:'2.1 ch Atmos', audioBrand:'Bang & Olufsen',
     os:'Google TV', sizes:[55,65,75,85,98],
-    price:{lo:999,hi:2499}, gaming:true,
+    gaming:true,
     note:'5,000+ dimming zones · Bang & Olufsen premium audio'
   },
   {
@@ -348,7 +343,7 @@ const TVS = [
     hdmiPorts:4, hdmiVer:2.1, zones:8000,
     nits:6500, audioW:70, audioSys:'2.1 ch Atmos', audioBrand:'Bang & Olufsen',
     os:'Google TV', sizes:[65,75,85,98],
-    price:{lo:1499,hi:3499}, gaming:true,
+    gaming:true,
     note:'2025 flagship · 6,500 nits peak · advanced Halo Control System'
   },
   {
@@ -358,7 +353,7 @@ const TVS = [
     hdmiPorts:4, hdmiVer:2.1, zones:2100,
     nits:3000, audioW:40, audioSys:'2.1 ch AtmosConnect', audioBrand:'Bang & Olufsen',
     os:'Google TV', sizes:[55,65,75,85],
-    price:{lo:999,hi:2999}, gaming:true,
+    gaming:true,
     note:'SQD Mini-LED · HVA 2.0 Pro Panel · 2,100+ zones · B&O audio'
   },
   {
@@ -368,7 +363,7 @@ const TVS = [
     hdmiPorts:4, hdmiVer:2.1, zones:4000,
     nits:6000, audioW:60, audioSys:'2.1 ch Atmos FlexConnect', audioBrand:'Bang & Olufsen',
     os:'Google TV', sizes:[55,65,75,85,98],
-    price:{lo:1799,hi:4999}, gaming:true,
+    gaming:true,
     note:'SQD Mini-LED · WHVA 2.0 Ultra Panel · Dolby Vision 2.0 Max · 4,000+ zones'
   },
   {
@@ -378,7 +373,7 @@ const TVS = [
     hdmiPorts:4, hdmiVer:2.1, zones:5600,
     nits:9000, audioW:80, audioSys:'2.1 ch Atmos', audioBrand:null,
     os:'Google TV', sizes:[85,98,115],
-    price:{lo:5999,hi:24999}, gaming:true,
+    gaming:true,
     note:'RGB Mini-LED · Narrow Band RGB Ultra LEDs · 100% BT.2020 · up to 115"'
   },
   {
@@ -388,7 +383,7 @@ const TVS = [
     hdmiPorts:4, hdmiVer:2.1, zones:20736,
     nits:10000, audioW:100, audioSys:'2.1 ch Atmos + Soundbar', audioBrand:'Bang & Olufsen',
     os:'Google TV', sizes:[75,85,98],
-    price:{lo:3999,hi:9999}, gaming:true,
+    gaming:true,
     note:'8K SQD Mini-LED · WHVA 2.0 Ultra Panel · B&O soundbar + up-firing Atmos'
   }
 ];
@@ -412,7 +407,6 @@ const ROWS = [
   { lbl:'HDR Formats',         get:t=>({pills:t.hdr,num:t.hdr.length}),                    best:1 },
   { lbl:'Audio System',        get:t=>({txt:t.audioW+'W '+t.audioSys+(t.audioBrand?' · '+t.audioBrand:''),num:t.audioW}), best:1 },
   { lbl:'Available Sizes',     get:t=>({sizes:t.sizes}),                                   best:null },
-  { lbl:'Starting Price',      get:t=>({txt:'$'+t.price.lo.toLocaleString(),num:t.price.lo}),best:-1},
   { lbl:'Smart OS',            get:t=>({txt:t.os}),                                        best:null },
   { lbl:'Model Year',          get:t=>({txt:String(t.year),num:t.year}),                   best:null },
 ];
@@ -470,7 +464,6 @@ function sorted(list){
     if(k==='model') return d==='asc'?a.model.localeCompare(b.model):b.model.localeCompare(a.model);
     let av,bv;
     if(k==='year') {av=a.year;bv=b.year;}
-    if(k==='price'){av=a.price.lo;bv=b.price.lo;}
     if(k==='nits') {av=a.nits;bv=b.nits;}
     if(k==='zones'){av=a.zones;bv=b.zones;}
     return d==='asc'?av-bv:bv-av;
@@ -506,7 +499,6 @@ function renderCards(){
       </div>
       <div><div class="slabel">HDR Support</div><div class="pills">${t.hdr.map(hp).join('')}</div></div>
       <div><div class="slabel">Available Sizes</div><div class="pills">${t.sizes.map(sp).join('')}</div></div>
-      <div class="price">From <strong>$${t.price.lo.toLocaleString()}</strong> – $${t.price.hi.toLocaleString()}</div>
       <button class="cbtn${on?' on':''}" data-cid="${t.id}" ${dis?'disabled':''} aria-pressed="${on}">
         ${on?'✓ In comparison':dis?'Max 4 selected':'+ Add to compare'}
       </button>
