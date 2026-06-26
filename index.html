@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TCL TV Comparison — 2025 / 2026 Lineup</title>
+  <style>
+    :root {
+      --bg:        #0b0d14;
+      --bg-card:   #131620;
+      --bg-hover:  #1a1e2e;
+      --bg-filter: rgba(11,13,20,0.94);
+      --bg-tray:   #0f1120;
+      --text:      #edf0f8;
+      --text-2:    #7b87a0;
+      --text-3:    #40495e;
+      --accent:    #3b82f6;
+      --acc2:      #2563eb;
+      --gold:      #f59e0b;
+      --gold-bg:   rgba(245,158,11,0.1);
+      --border:    #1c2133;
+      --border2:   #252c3d;
+      --r:         14px;
+      --r2:        8px;
+      --r3:        5px;
+      --sh-card:   0 4px 24px rgba(0,0,0,0.55);
+      --sh-tray:   0 -8px 40px rgba(0,0,0,0.65);
+    }
+    [data-theme="light"] {
+      --bg:        #eef1f8;
+      --bg-card:   #ffffff;
+      --bg-hover:  #f4f7ff;
+      --bg-filter: rgba(238,241,248,0.95);
+      --bg-tray:   #ffffff;
+      --text:      #0e1422;
+      --text-2:    #4b5563;
+      --text-3:    #9ca3af;
+      --border:    #dde2ee;
+      --border2:   #c9d0e2;
+      --sh-card:   0 2px 16px rgba(0,0,0,0.08);
+      --sh-tray:   0 -4px 24px rgba(0,0,0,0.1);
+    }
+
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background .25s,color .25s}
+    .wrap{max-width:1440px;margin:0 auto;padding:0 1.4rem}
+
+    /* ── HEADER ── */
+    .hdr{background:var(--bg-card);border-bottom:1px solid var(--border);padding:.85rem 0;position:sticky;top:0;z-index:200;backdrop-filter:blur(12px)}
+    .hdr .wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem}
+    .logo{display:flex;align-items:center;gap:.6rem}
+    .logo-mark{background:var(--accent);color:#fff;font-weight:900;font-size:.68rem;letter-spacing:.09em;padding:3px 8px;border-radius:4px}
+    .logo h1{font-size:1.1rem;font-weight:800;letter-spacing:-.02em}
+    .logo-sub{font-size:.72rem;color:var(--text-3);margin-top:.1rem}
+    .theme-btn{background:var(--border);border:none;border-radius:999px;padding:.38rem .85rem;font-size:.78rem;color:var(--text-2);cursor:pointer;display:flex;align-items:center;gap:.4rem;transition:all .15s}
+    .theme-btn:hover{background:var(--accent);color:#fff}
+
+    /* ── FILTER BAR ── */
+    .fbar{background:var(--bg-filter);border-bottom:1px solid var(--border);padding:.6rem 0;position:sticky;top:52px;z-index:100;backdrop-filter:blur(12px)}
+    .fbar .wrap{display:flex;flex-wrap:wrap;gap:.55rem;align-items:center}
+    .fg{display:flex;align-items:center;gap:.3rem}
+    .fl{font-size:.64rem;font-weight:800;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
+    .fbg{display:flex;gap:.12rem}
+    .fb{background:transparent;border:1px solid var(--border2);border-radius:var(--r2);color:var(--text-2);font-size:.72rem;font-weight:500;padding:.26rem .52rem;cursor:pointer;transition:all .12s;white-space:nowrap}
+    .fb:hover{border-color:var(--accent);color:var(--accent)}
+    .fb.on{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
+    .fdiv{width:1px;height:20px;background:var(--border);flex-shrink:0}
+    .sort-sel{background:var(--bg-card);border:1px solid var(--border2);border-radius:var(--r2);color:var(--text);font-size:.72rem;padding:.26rem .52rem;cursor:pointer;outline:none}
+    .sort-sel:focus{border-color:var(--accent)}
+    .clr-btn{background:transparent;border:1px solid var(--border2);border-radius:var(--r2);color:var(--text-3);font-size:.7rem;padding:.26rem .52rem;cursor:pointer;transition:all .12s;margin-left:auto}
+    .clr-btn:hover{border-color:#ef4444;color:#ef4444}
+
+    /* ── MAIN ── */
+    main{padding:1.4rem 0 7rem}
+    .rbar{margin-bottom:1rem}
+    #rcount{font-size:.78rem;color:var(--text-3)}
+
+    /* ── GRID ── */
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:1rem}
+
+    /* ── CARD ── */
+    .card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:1.1rem;display:flex;flex-direction:column;gap:.75rem;transition:all .18s;position:relative;overflow:hidden}
+    .card:hover{background:var(--bg-hover);border-color:var(--border2);transform:translateY(-2px);box-shadow:var(--sh-card)}
+    .card.sel{border-color:var(--accent);background:var(--bg-hover)}
+    .card.sel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),#60a5fa)}
+
+    .chead{display:flex;align-items:flex-start;justify-content:space-between}
+    .cmodel{font-size:1.45rem;font-weight:900;letter-spacing:-.03em;line-height:1}
+    .csub{font-size:.7rem;color:var(--text-3);margin-top:.18rem}
+
+    .bdg-row{display:flex;flex-wrap:wrap;gap:.26rem}
+    .bdg{font-size:.6rem;font-weight:800;padding:2px 6px;border-radius:var(--r3);text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
+    .bdg-26{background:rgba(245,158,11,.12);color:#f59e0b;border:1px solid rgba(245,158,11,.25)}
+    .bdg-25{background:rgba(99,102,241,.1);color:#818cf8;border:1px solid rgba(99,102,241,.2)}
+    .bdg-mini{background:rgba(124,58,237,.12);color:#a78bfa;border:1px solid rgba(124,58,237,.25)}
+    .bdg-sqd{background:rgba(16,185,129,.12);color:#34d399;border:1px solid rgba(16,185,129,.25)}
+    .bdg-rgb{background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(239,68,68,.25)}
+    .bdg-8k{background:rgba(245,158,11,.12);color:#fbbf24;border:1px solid rgba(245,158,11,.25)}
+    .bdg-game{background:rgba(16,185,129,.1);color:#10b981;border:1px solid rgba(16,185,129,.22)}
+    .bdg-bo{background:rgba(59,130,246,.1);color:#60a5fa;border:1px solid rgba(59,130,246,.22)}
+
+    .sg{display:grid;grid-template-columns:1fr 1fr;gap:.45rem .7rem}
+    .si{display:flex;flex-direction:column;gap:.08rem}
+    .sk{font-size:.6rem;font-weight:800;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em}
+    .sv{font-size:.82rem;font-weight:600;color:var(--text)}
+    .sv.hi{color:var(--accent)}
+    .sv.gold{color:var(--gold)}
+
+    .slabel{font-size:.6rem;font-weight:800;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.28rem}
+    .pills{display:flex;flex-wrap:wrap;gap:.22rem}
+    .hpill{font-size:.58rem;font-weight:700;padding:2px 6px;border-radius:4px;background:rgba(59,130,246,.1);color:#60a5fa;border:1px solid rgba(59,130,246,.2)}
+    .spill{font-size:.65rem;font-weight:600;padding:2px 6px;border-radius:4px;background:var(--bg);border:1px solid var(--border2);color:var(--text-2)}
+
+    .price{font-size:.8rem;color:var(--text-2)}
+    .price strong{color:var(--text);font-size:.9rem}
+
+    .cbtn{margin-top:auto;background:transparent;border:1px solid var(--accent);border-radius:var(--r2);color:var(--accent);font-size:.78rem;font-weight:700;padding:.48rem;cursor:pointer;transition:all .14s;width:100%;display:flex;align-items:center;justify-content:center;gap:.32rem}
+    .cbtn:hover:not(:disabled){background:var(--accent);color:#fff}
+    .cbtn.on{background:var(--accent);color:#fff}
+    .cbtn:disabled{opacity:.32;cursor:not-allowed;border-color:var(--border2);color:var(--text-3)}
+
+    /* ── TRAY ── */
+    .tray{position:fixed;bottom:0;left:0;right:0;background:var(--bg-tray);border-top:1px solid var(--border2);box-shadow:var(--sh-tray);padding:.6rem 0;transform:translateY(110%);transition:transform .3s cubic-bezier(.34,1.56,.64,1);z-index:150}
+    .tray.vis{transform:translateY(0)}
+    .tray .wrap{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap}
+    .tlabel{font-size:.66rem;font-weight:800;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
+    .tchips{display:flex;gap:.38rem;flex:1;flex-wrap:wrap}
+    .tchip{display:flex;align-items:center;gap:.3rem;background:rgba(59,130,246,.1);border:1px solid var(--accent);border-radius:999px;padding:.22rem .6rem;font-size:.76rem;font-weight:700;color:var(--accent)}
+    .tx{background:none;border:none;cursor:pointer;color:var(--text-3);font-size:.88rem;line-height:1;padding:0;transition:color .12s}
+    .tx:hover{color:#ef4444}
+    .tacts{display:flex;gap:.45rem;margin-left:auto}
+    .tbtn{border:none;border-radius:var(--r2);font-size:.76rem;font-weight:700;padding:.4rem .8rem;cursor:pointer;transition:all .12s}
+    .tbtn-clr{background:transparent;border:1px solid var(--border2);color:var(--text-2)}
+    .tbtn-clr:hover{border-color:#ef4444;color:#ef4444}
+    .tbtn-go{background:var(--accent);color:#fff}
+    .tbtn-go:hover{background:var(--acc2)}
+
+    /* ── COMPARISON ── */
+    .csec{margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--border)}
+    .csec h2{font-size:1.1rem;font-weight:800;margin-bottom:.9rem}
+    .cscroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--border);border-radius:var(--r)}
+    .ctable{min-width:480px}
+
+    .crow-hdr{display:grid;background:var(--bg-card);border-bottom:2px solid var(--border2)}
+    .chdr-cell{padding:.8rem .9rem;font-weight:700;border-right:1px solid var(--border);display:flex;align-items:center}
+    .chdr-cell:first-child{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--text-3)}
+    .chdr-cell:last-child{border-right:none}
+    .chdr-model{font-size:1rem;font-weight:900;letter-spacing:-.02em}
+    .chdr-sub{font-size:.67rem;color:var(--text-2);margin-top:.1rem;font-weight:400}
+    .crmv{margin-left:auto;background:none;border:none;color:var(--text-3);cursor:pointer;font-size:.78rem;padding:.18rem .38rem;border-radius:4px;transition:all .12s}
+    .crmv:hover{background:rgba(239,68,68,.1);color:#ef4444}
+
+    .crow{display:grid}
+    .crow:nth-child(odd) .ccell,.crow:nth-child(odd) .clbl{background:rgba(255,255,255,.025)}
+    [data-theme="light"] .crow:nth-child(odd) .ccell,[data-theme="light"] .crow:nth-child(odd) .clbl{background:rgba(0,0,0,.025)}
+
+    .clbl{padding:.6rem .9rem;font-size:.73rem;font-weight:600;color:var(--text-2);border-right:1px solid var(--border);display:flex;align-items:center;min-width:148px}
+    .ccell{padding:.6rem .9rem;font-size:.8rem;color:var(--text);border-right:1px solid var(--border);display:flex;align-items:center;position:relative;transition:background .12s}
+    .ccell:last-child,.clbl:last-child{border-right:none}
+    .ccell.best{background:var(--gold-bg)!important}
+    .ccell.best .cv{color:var(--gold);font-weight:700}
+    .best-tag{position:absolute;top:3px;right:5px;font-size:.52rem;font-weight:900;text-transform:uppercase;letter-spacing:.07em;color:var(--gold);background:var(--bg-card);border:1px solid rgba(245,158,11,.4);padding:1px 4px;border-radius:3px}
+    .cv-na{color:var(--text-3);font-style:italic}
+    .cv-pills{display:flex;flex-wrap:wrap;gap:.18rem}
+
+    .pnote{margin-top:.9rem;font-size:.7rem;color:var(--text-3);text-align:center}
+
+    /* ── NO RESULTS ── */
+    .nores{grid-column:1/-1;text-align:center;padding:4rem 2rem;color:var(--text-3)}
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar{width:5px;height:5px}
+    ::-webkit-scrollbar-track{background:transparent}
+    ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+    ::-webkit-scrollbar-thumb:hover{background:var(--text-3)}
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:640px){
+      .grid{grid-template-columns:1fr}
+      .fbar .wrap{gap:.4rem}
+      .fl{display:none}
+      .clbl{min-width:108px;font-size:.67rem;padding:.5rem .6rem}
+      .ccell{padding:.5rem .6rem;font-size:.75rem}
+      .logo-sub{display:none}
+    }
+    @media(max-width:900px){.clr-btn{margin-left:0}}
+  </style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="wrap">
+    <div class="logo">
+      <span class="logo-mark">TCL</span>
+      <div>
+        <h1>TV Comparison</h1>
+        <div class="logo-sub">2025 K-Series &amp; 2026 L-Series · 9 Models</div>
+      </div>
+    </div>
+    <button class="theme-btn" id="theme-btn">
+      <span id="tico">☀️</span><span id="tlbl">Light mode</span>
+    </button>
+  </div>
+</header>
+
+<nav class="fbar" aria-label="Filters">
+  <div class="wrap">
+    <div class="fg">
+      <span class="fl">Size</span>
+      <div class="fbg" id="fg-size">
+        <button class="fb on" data-v="">Any</button>
+        <button class="fb" data-v="55">55"</button>
+        <button class="fb" data-v="65">65"</button>
+        <button class="fb" data-v="75">75"</button>
+        <button class="fb" data-v="85">85"</button>
+        <button class="fb" data-v="98">98"</button>
+        <button class="fb" data-v="115">115"</button>
+      </div>
+    </div>
+    <div class="fdiv"></div>
+    <div class="fg">
+      <span class="fl">Panel</span>
+      <div class="fbg" id="fg-panel">
+        <button class="fb on" data-v="">Any</button>
+        <button class="fb" data-v="QLED">QLED</button>
+        <button class="fb" data-v="QD-Mini LED">QD-Mini LED</button>
+        <button class="fb" data-v="SQD Mini-LED">SQD</button>
+        <button class="fb" data-v="RGB Mini-LED">RGB</button>
+      </div>
+    </div>
+    <div class="fdiv"></div>
+    <div class="fg">
+      <span class="fl">Refresh</span>
+      <div class="fbg" id="fg-refresh">
+        <button class="fb on" data-v="">Any</button>
+        <button class="fb" data-v="60">60Hz</button>
+        <button class="fb" data-v="120">120Hz</button>
+        <button class="fb" data-v="144">144Hz</button>
+      </div>
+    </div>
+    <div class="fdiv"></div>
+    <div class="fg">
+      <span class="fl">Year</span>
+      <div class="fbg" id="fg-year">
+        <button class="fb on" data-v="">Any</button>
+        <button class="fb" data-v="2025">2025</button>
+        <button class="fb" data-v="2026">2026</button>
+      </div>
+    </div>
+    <div class="fdiv"></div>
+    <div class="fg">
+      <span class="fl">Gaming</span>
+      <div class="fbg" id="fg-gaming">
+        <button class="fb on" data-v="">Any</button>
+        <button class="fb" data-v="1">Gaming Ready</button>
+      </div>
+    </div>
+    <div class="fdiv"></div>
+    <div class="fg">
+      <span class="fl">Sort</span>
+      <select class="sort-sel" id="sort-sel">
+        <option value="model-asc">Model A–Z</option>
+        <option value="year-asc">Year (Old–New)</option>
+        <option value="year-desc">Year (New–Old)</option>
+        <option value="price-asc">Price: Low–High</option>
+        <option value="price-desc">Price: High–Low</option>
+        <option value="nits-desc">Brightness ↓</option>
+        <option value="zones-desc">Dimming Zones ↓</option>
+      </select>
+    </div>
+    <button class="clr-btn" id="clr-btn">Clear filters</button>
+  </div>
+</nav>
+
+<main>
+  <div class="wrap">
+    <div class="rbar"><p id="rcount" aria-live="polite">Showing 9 models</p></div>
+    <div class="grid" id="grid" role="list"></div>
+
+    <section class="csec" id="csec" style="display:none">
+      <h2>Side-by-Side Comparison</h2>
+      <div class="cscroll">
+        <div class="ctable" id="ctable"></div>
+      </div>
+      <p class="pnote">* Prices are approximate starting prices (USD). Specs based on official TCL listings; dimming zone counts for QM9K are estimated. Nit values reflect advertised peak brightness on small HDR highlight windows.</p>
+    </section>
+  </div>
+</main>
+
+<div class="tray" id="tray">
+  <div class="wrap">
+    <span class="tlabel">Comparing</span>
+    <div class="tchips" id="tchips"></div>
+    <div class="tacts">
+      <button class="tbtn tbtn-clr" id="tclr">Clear all</button>
+      <button class="tbtn tbtn-go" id="tgo">View comparison ↓</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── TV DATA (verified specs) ────────────────────────────────────────────────
+const TVS = [
+  {
+    id:'qm5k', model:'QM5K', year:2025, tier:5, series:'Q-Series',
+    panel:'QLED', resolution:'4K', hz:60,
+    hdr:['Dolby Vision','HDR10+','HLG'],
+    hdmiPorts:4, hdmiVer:2.0, zones:500,
+    nits:1500, audioW:20, audioSys:'2.0 ch', audioBrand:null,
+    os:'Google TV', sizes:[43,50,55,65,75,85],
+    price:{lo:599,hi:1199}, gaming:false,
+    note:'Entry-level QLED with up to 500 local dimming zones'
+  },
+  {
+    id:'qm6k', model:'QM6K', year:2025, tier:4, series:'Q-Series',
+    panel:'QD-Mini LED', resolution:'4K', hz:120,
+    hdr:['Dolby Vision IQ','HDR10+','HLG'],
+    hdmiPorts:4, hdmiVer:2.1, zones:500,
+    nits:2600, audioW:30, audioSys:'2.0 ch', audioBrand:null,
+    os:'Google TV', sizes:[43,50,55,65,75,85,98],
+    price:{lo:449,hi:1099}, gaming:true,
+    note:'QD-Mini LED with Halo Control System to minimize blooming'
+  },
+  {
+    id:'qm7k', model:'QM7K', year:2025, tier:3, series:'Q-Series',
+    panel:'QD-Mini LED', resolution:'4K', hz:144,
+    hdr:['Dolby Vision IQ','HDR10+','HLG'],
+    hdmiPorts:4, hdmiVer:2.1, zones:2500,
+    nits:3000, audioW:40, audioSys:'2.1 ch', audioBrand:null,
+    os:'Google TV', sizes:[55,65,75,85],
+    price:{lo:499,hi:1299}, gaming:true,
+    note:'Anti-reflective CrystGlow HVA panel · 2,500 dimming zones'
+  },
+  {
+    id:'qm8k', model:'QM8K', year:2025, tier:2, series:'Q-Series',
+    panel:'QD-Mini LED', resolution:'4K', hz:144,
+    hdr:['Dolby Vision IQ','HDR10+','HLG'],
+    hdmiPorts:4, hdmiVer:2.1, zones:5000,
+    nits:5000, audioW:60, audioSys:'2.1 ch Atmos', audioBrand:'Bang & Olufsen',
+    os:'Google TV', sizes:[55,65,75,85,98],
+    price:{lo:999,hi:2499}, gaming:true,
+    note:'5,000+ dimming zones · Bang & Olufsen premium audio'
+  },
+  {
+    id:'qm9k', model:'QM9K', year:2025, tier:1, series:'Q-Series',
+    panel:'QD-Mini LED', resolution:'4K', hz:144,
+    hdr:['Dolby Vision IQ','HDR10+','HLG'],
+    hdmiPorts:4, hdmiVer:2.1, zones:8000,
+    nits:6500, audioW:70, audioSys:'2.1 ch Atmos', audioBrand:'Bang & Olufsen',
+    os:'Google TV', sizes:[65,75,85,98],
+    price:{lo:1499,hi:3499}, gaming:true,
+    note:'2025 flagship · 6,500 nits peak · advanced Halo Control System'
+  },
+  {
+    id:'qm7l', model:'QM7L', year:2026, tier:4, series:'Q-Series',
+    panel:'SQD Mini-LED', resolution:'4K', hz:144,
+    hdr:['Dolby Vision IQ','HDR10+','HLG'],
+    hdmiPorts:4, hdmiVer:2.1, zones:2100,
+    nits:3000, audioW:40, audioSys:'2.1 ch AtmosConnect', audioBrand:'Bang & Olufsen',
+    os:'Google TV', sizes:[55,65,75,85],
+    price:{lo:999,hi:2999}, gaming:true,
+    note:'SQD Mini-LED · HVA 2.0 Pro Panel · 2,100+ zones · B&O audio'
+  },
+  {
+    id:'qm8l', model:'QM8L', year:2026, tier:3, series:'Q-Series',
+    panel:'SQD Mini-LED', resolution:'4K', hz:144,
+    hdr:['Dolby Vision 2.0 Max','HDR10+','HLG'],
+    hdmiPorts:4, hdmiVer:2.1, zones:4000,
+    nits:6000, audioW:60, audioSys:'2.1 ch Atmos FlexConnect', audioBrand:'Bang & Olufsen',
+    os:'Google TV', sizes:[55,65,75,85,98],
+    price:{lo:1799,hi:4999}, gaming:true,
+    note:'SQD Mini-LED · WHVA 2.0 Ultra Panel · Dolby Vision 2.0 Max · 4,000+ zones'
+  },
+  {
+    id:'rm9l', model:'RM9L', year:2026, tier:2, series:'R-Series',
+    panel:'RGB Mini-LED', resolution:'4K', hz:144,
+    hdr:['Dolby Vision IQ','HDR10+','HLG'],
+    hdmiPorts:4, hdmiVer:2.1, zones:5600,
+    nits:9000, audioW:80, audioSys:'2.1 ch Atmos', audioBrand:null,
+    os:'Google TV', sizes:[85,98,115],
+    price:{lo:5999,hi:24999}, gaming:true,
+    note:'RGB Mini-LED · Narrow Band RGB Ultra LEDs · 100% BT.2020 · up to 115"'
+  },
+  {
+    id:'x11l', model:'X11', year:2026, tier:1, series:'X-Series',
+    panel:'SQD Mini-LED', resolution:'8K', hz:144,
+    hdr:['Dolby Vision IQ','HDR10+','HLG'],
+    hdmiPorts:4, hdmiVer:2.1, zones:20736,
+    nits:10000, audioW:100, audioSys:'2.1 ch Atmos + Soundbar', audioBrand:'Bang & Olufsen',
+    os:'Google TV', sizes:[75,85,98],
+    price:{lo:3999,hi:9999}, gaming:true,
+    note:'8K SQD Mini-LED · WHVA 2.0 Ultra Panel · B&O soundbar + up-firing Atmos'
+  }
+];
+
+// ─── STATE ───────────────────────────────────────────────────────────────────
+const S = {
+  f:{ size:'',panel:'',hz:'',year:'',gaming:'' },
+  sort:'model-asc',
+  sel:[],
+  theme: localStorage.getItem('tcl-theme')||'dark'
+};
+
+// ─── COMPARISON ROWS ─────────────────────────────────────────────────────────
+const ROWS = [
+  { lbl:'Display Technology',  get:t=>({txt:t.panel}),                                    best:null },
+  { lbl:'Resolution',          get:t=>({txt:t.resolution+' UHD',num:t.resolution==='8K'?2:1}), best:1 },
+  { lbl:'Refresh Rate',        get:t=>({txt:t.hz+'Hz',num:t.hz}),                          best:1 },
+  { lbl:'Peak Brightness',     get:t=>({txt:t.nits.toLocaleString()+' nits',num:t.nits}),  best:1 },
+  { lbl:'Local Dimming Zones', get:t=>({txt:t.zones.toLocaleString()+' zones',num:t.zones}),best:1},
+  { lbl:'HDMI',                get:t=>({txt:t.hdmiPorts+'× HDMI '+t.hdmiVer,num:t.hdmiVer}),best:1},
+  { lbl:'HDR Formats',         get:t=>({pills:t.hdr,num:t.hdr.length}),                    best:1 },
+  { lbl:'Audio System',        get:t=>({txt:t.audioW+'W '+t.audioSys+(t.audioBrand?' · '+t.audioBrand:''),num:t.audioW}), best:1 },
+  { lbl:'Available Sizes',     get:t=>({sizes:t.sizes}),                                   best:null },
+  { lbl:'Starting Price',      get:t=>({txt:'$'+t.price.lo.toLocaleString(),num:t.price.lo}),best:-1},
+  { lbl:'Smart OS',            get:t=>({txt:t.os}),                                        best:null },
+  { lbl:'Model Year',          get:t=>({txt:String(t.year),num:t.year}),                   best:null },
+];
+
+// ─── HELPERS ─────────────────────────────────────────────────────────────────
+const $ = id => document.getElementById(id);
+const byId = id => TVS.find(t=>t.id===id);
+
+function bestIdx(vals, dir) {
+  const ns = vals.map((v,i)=>({v,i})).filter(x=>x.v!=null&&!isNaN(x.v));
+  if(ns.length<2) return [];
+  const tgt = dir===1 ? Math.max(...ns.map(x=>x.v)) : Math.min(...ns.map(x=>x.v));
+  const w = ns.filter(x=>x.v===tgt);
+  if(w.length===ns.length) return [];
+  return w.map(x=>x.i);
+}
+
+function hp(h){ return `<span class="hpill">${h}</span>`; }
+function sp(s){ return `<span class="spill">${s}"</span>`; }
+
+function panelBadge(t){
+  if(t.panel==='SQD Mini-LED') return `<span class="bdg bdg-sqd">SQD</span>`;
+  if(t.panel==='RGB Mini-LED') return `<span class="bdg bdg-rgb">RGB</span>`;
+  if(t.panel==='QD-Mini LED')  return `<span class="bdg bdg-mini">QD Mini-LED</span>`;
+  return `<span class="bdg bdg-mini" style="opacity:.7">Mini-LED</span>`;
+}
+
+function cardBadges(t){
+  const b=[];
+  b.push(t.year===2026
+    ? `<span class="bdg bdg-26">2026</span>`
+    : `<span class="bdg bdg-25">2025</span>`);
+  b.push(panelBadge(t));
+  if(t.resolution==='8K') b.push(`<span class="bdg bdg-8k">8K</span>`);
+  if(t.gaming)            b.push(`<span class="bdg bdg-game">Gaming</span>`);
+  if(t.audioBrand==='Bang & Olufsen') b.push(`<span class="bdg bdg-bo">B&O Audio</span>`);
+  return b.join('');
+}
+
+// ─── FILTER / SORT ───────────────────────────────────────────────────────────
+function filtered(){
+  return TVS.filter(t=>{
+    if(S.f.size   && !t.sizes.includes(+S.f.size))   return false;
+    if(S.f.panel  && t.panel!==S.f.panel)            return false;
+    if(S.f.hz     && t.hz!==+S.f.hz)                 return false;
+    if(S.f.year   && t.year!==+S.f.year)             return false;
+    if(S.f.gaming && !t.gaming)                      return false;
+    return true;
+  });
+}
+
+function sorted(list){
+  const [k,d]=S.sort.split('-');
+  return [...list].sort((a,b)=>{
+    if(k==='model') return d==='asc'?a.model.localeCompare(b.model):b.model.localeCompare(a.model);
+    let av,bv;
+    if(k==='year') {av=a.year;bv=b.year;}
+    if(k==='price'){av=a.price.lo;bv=b.price.lo;}
+    if(k==='nits') {av=a.nits;bv=b.nits;}
+    if(k==='zones'){av=a.zones;bv=b.zones;}
+    return d==='asc'?av-bv:bv-av;
+  });
+}
+
+// ─── RENDER CARDS ────────────────────────────────────────────────────────────
+function renderCards(){
+  const list=sorted(filtered());
+  const g=$('grid');
+  $('rcount').textContent=`Showing ${list.length} of ${TVS.length} model${list.length!==1?'s':''}`;
+  if(!list.length){
+    g.innerHTML=`<div class="nores"><p style="font-size:1.05rem;font-weight:700;margin-bottom:.4rem">No models match your filters</p><p style="font-size:.78rem;margin-bottom:.6rem">Try broadening your search</p><button class="clr-btn" onclick="clearF()" style="padding:.3rem .8rem">Clear all filters</button></div>`;
+    return;
+  }
+  const maxed=S.sel.length>=4;
+  g.innerHTML=list.map(t=>{
+    const on=S.sel.includes(t.id);
+    const dis=!on&&maxed;
+    const zonesStr=t.zones.toLocaleString();
+    return`<div class="card${on?' sel':''}" role="listitem">
+      <div class="chead">
+        <div><div class="cmodel">${t.model}</div><div class="csub">${t.series} &middot; ${t.year}</div></div>
+      </div>
+      <div class="bdg-row">${cardBadges(t)}</div>
+      <div class="sg">
+        <div class="si"><span class="sk">Resolution</span><span class="sv${t.resolution==='8K'?' gold':''}">${t.resolution} UHD</span></div>
+        <div class="si"><span class="sk">Refresh Rate</span><span class="sv${t.hz>=144?' hi':''}">${t.hz}Hz</span></div>
+        <div class="si"><span class="sk">Peak Brightness</span><span class="sv gold">${t.nits.toLocaleString()} nits</span></div>
+        <div class="si"><span class="sk">Dimming Zones</span><span class="sv">${zonesStr}</span></div>
+        <div class="si"><span class="sk">HDMI</span><span class="sv">${t.hdmiPorts}&times; HDMI ${t.hdmiVer}</span></div>
+        <div class="si"><span class="sk">Audio</span><span class="sv">${t.audioW}W ${t.audioSys}</span></div>
+      </div>
+      <div><div class="slabel">HDR Support</div><div class="pills">${t.hdr.map(hp).join('')}</div></div>
+      <div><div class="slabel">Available Sizes</div><div class="pills">${t.sizes.map(sp).join('')}</div></div>
+      <div class="price">From <strong>$${t.price.lo.toLocaleString()}</strong> – $${t.price.hi.toLocaleString()}</div>
+      <button class="cbtn${on?' on':''}" data-cid="${t.id}" ${dis?'disabled':''} aria-pressed="${on}">
+        ${on?'✓ In comparison':dis?'Max 4 selected':'+ Add to compare'}
+      </button>
+    </div>`;
+  }).join('');
+}
+
+// ─── TRAY ────────────────────────────────────────────────────────────────────
+function renderTray(){
+  const tray=$('tray');
+  if(S.sel.length<2){tray.classList.remove('vis');return;}
+  tray.classList.add('vis');
+  $('tchips').innerHTML=S.sel.map(id=>{
+    const t=byId(id);
+    return`<div class="tchip">${t.model}<button class="tx" data-rid="${id}" aria-label="Remove ${t.model}">×</button></div>`;
+  }).join('');
+}
+
+// ─── COMPARISON TABLE ────────────────────────────────────────────────────────
+function renderComp(){
+  const sec=$('csec');
+  if(S.sel.length<2){sec.style.display='none';return;}
+  sec.style.display='block';
+  const tvs=S.sel.map(id=>byId(id));
+  const N=tvs.length;
+  const cols=`148px repeat(${N},1fr)`;
+
+  let h=`<div class="crow-hdr" style="grid-template-columns:${cols}">
+    <div class="chdr-cell">Specification</div>
+    ${tvs.map(t=>`<div class="chdr-cell">
+      <div><div class="chdr-model">${t.model}</div><div class="chdr-sub">${t.series} &middot; ${t.year}</div></div>
+      <button class="crmv" data-rid="${t.id}" aria-label="Remove ${t.model}">✕</button>
+    </div>`).join('')}
+  </div>`;
+
+  ROWS.forEach(row=>{
+    const cells=tvs.map(t=>row.get(t));
+    const bests=row.best!==null ? bestIdx(cells.map(c=>c.num),row.best) : [];
+    const chtml=cells.map((c,i)=>{
+      const b=bests.includes(i);
+      let inner;
+      if(c.pills)  inner=`<div class="cv cv-pills">${c.pills.map(hp).join('')}</div>`;
+      else if(c.sizes) inner=`<div class="cv cv-pills">${c.sizes.map(sp).join('')}</div>`;
+      else inner=`<span class="cv">${c.txt}</span>`;
+      return`<div class="ccell${b?' best':''}">
+        ${b?'<span class="best-tag">Best</span>':''}
+        ${inner}
+      </div>`;
+    }).join('');
+    h+=`<div class="crow" style="grid-template-columns:${cols}">
+      <div class="clbl">${row.lbl}</div>${chtml}
+    </div>`;
+  });
+
+  $('ctable').innerHTML=h;
+}
+
+// ─── RENDER ALL ──────────────────────────────────────────────────────────────
+function render(){ renderCards(); renderTray(); renderComp(); }
+
+function toggleSel(id){
+  const i=S.sel.indexOf(id);
+  if(i!==-1) S.sel.splice(i,1);
+  else if(S.sel.length<4) S.sel.push(id);
+  render();
+}
+
+// ─── FILTER GROUPS ───────────────────────────────────────────────────────────
+function setupFG(gid,key){
+  $(gid).addEventListener('click',e=>{
+    const b=e.target.closest('.fb');
+    if(!b) return;
+    $(gid).querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    S.f[key]=b.dataset.v;
+    render();
+  });
+}
+
+function clearF(){
+  S.f={size:'',panel:'',hz:'',year:'',gaming:''};
+  document.querySelectorAll('.fb').forEach(b=>b.classList.toggle('on',b.dataset.v===''));
+  render();
+}
+
+// ─── THEME ───────────────────────────────────────────────────────────────────
+function setTheme(t){
+  S.theme=t;
+  document.documentElement.setAttribute('data-theme',t);
+  localStorage.setItem('tcl-theme',t);
+  $('tico').textContent=t==='dark'?'☀️':'🌙';
+  $('tlbl').textContent=t==='dark'?'Light mode':'Dark mode';
+}
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded',()=>{
+  setTheme(S.theme);
+
+  setupFG('fg-size',  'size');
+  setupFG('fg-panel', 'panel');
+  setupFG('fg-refresh','hz');
+  setupFG('fg-year',  'year');
+  setupFG('fg-gaming','gaming');
+
+  $('sort-sel').addEventListener('change',e=>{ S.sort=e.target.value; render(); });
+  $('clr-btn').addEventListener('click',clearF);
+
+  $('grid').addEventListener('click',e=>{
+    const b=e.target.closest('[data-cid]');
+    if(b&&!b.disabled) toggleSel(b.dataset.cid);
+  });
+
+  document.addEventListener('click',e=>{
+    const r=e.target.closest('[data-rid]');
+    if(r){ S.sel=S.sel.filter(x=>x!==r.dataset.rid); render(); }
+  });
+
+  $('tclr').addEventListener('click',()=>{ S.sel=[]; render(); });
+  $('tgo').addEventListener('click',()=>{
+    $('csec').scrollIntoView({behavior:'smooth',block:'start'});
+  });
+  $('theme-btn').addEventListener('click',()=>setTheme(S.theme==='dark'?'light':'dark'));
+
+  render();
+});
+</script>
+</body>
+</html>
