@@ -128,6 +128,83 @@ main { max-width: 1080px; margin: 0 auto; padding: 24px 20px 40px; }
 .momentum.rising  { background: rgba(56,217,169,0.14);  color: var(--accent-2); }
 .momentum.steady  { background: rgba(139,149,171,0.14); color: var(--muted); }
 
+/* ---------- Breakout Radar ---------- */
+.breakout { margin-bottom: 28px; }
+.section-head { margin-bottom: 14px; }
+.section-head h2 { font-size: 1.25rem; }
+.section-head p { color: var(--muted); font-size: 0.84rem; margin-top: 4px; }
+
+.breakout-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 14px;
+}
+
+.breakout-card {
+  position: relative;
+  background: linear-gradient(160deg, rgba(56,217,169,0.06), var(--panel));
+  border: 1px solid rgba(56,217,169,0.28);
+  border-radius: 14px;
+  padding: 16px;
+  overflow: hidden;
+}
+
+.verdict {
+  display: inline-block;
+  font-size: 0.62rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  margin-bottom: 10px;
+}
+.verdict.prime  { background: rgba(56,217,169,0.2);  color: var(--accent-2); }
+.verdict.strong { background: rgba(124,92,255,0.2);  color: #a893ff; }
+.verdict.on     { background: rgba(255,201,77,0.16); color: var(--gold); }
+.verdict.early  { background: rgba(139,149,171,0.15); color: var(--muted); }
+
+.b-head { display: flex; align-items: center; gap: 12px; }
+.b-head img.boxart {
+  width: 44px; height: 58px;
+  border-radius: 6px;
+  object-fit: cover;
+  border: 1px solid var(--border);
+}
+.b-head h3 { font-size: 1rem; }
+.b-head > div:nth-child(2) { flex: 1; min-width: 0; }
+.b-score {
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: var(--accent-2);
+  line-height: 1;
+}
+
+.b-growth { font-size: 0.78rem; font-weight: 700; }
+.b-growth.up { color: var(--accent-2); }
+.b-growth.down { color: var(--hot); }
+.b-growth.unknown { color: var(--muted); font-weight: 500; }
+
+.b-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin: 12px 0 10px;
+  color: var(--muted);
+  font-size: 0.76rem;
+}
+.b-stats b { color: var(--text); font-weight: 600; }
+
+.b-reasons { display: flex; flex-wrap: wrap; gap: 6px; }
+.b-reasons span {
+  background: rgba(0,0,0,0.28);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 3px 9px;
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+
 /* ---------- Game cards ---------- */
 .game-list { display: flex; flex-direction: column; gap: 14px; }
 
@@ -217,6 +294,7 @@ main { max-width: 1080px; margin: 0 auto; padding: 24px 20px 40px; }
   border-top: 1px solid var(--border);
 }
 .footnote strong { color: var(--text); }
+.footnote p + p { margin-top: 6px; }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 640px) {

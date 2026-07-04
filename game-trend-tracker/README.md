@@ -40,7 +40,27 @@ Responses are cached in memory for 2 minutes, keeping usage far inside both free
 | Trending views + velocity | YouTube Data API (gaming category) | Video/short-form momentum |
 | Trend score (0–100) | Composite | 60% live viewers, 30% view velocity, 10% channel breadth |
 | Short-form momentum | Derived | `surging / hot / rising / steady` badge per game |
+| Breakout score (0–100) | Composite | Which *smaller* game is most likely to blow up next |
 | Earnings | **Estimates** | See methodology below |
+
+### 🚀 Breakout Radar — get in early
+
+The Breakout Radar answers a different question than the main ranking: not "what's
+biggest right now" but **"what's most likely to become the next big thing"** — so
+creators can enter a space before it saturates. The current top 5 giants are excluded;
+remaining games (up to 150K live viewers) are scored on:
+
+- **Viewer growth (40%)** — live viewers now vs ~1 hour ago, measured from rolling
+  in-memory snapshots (the longer the server runs, the sharper this gets)
+- **Buzz-to-size ratio (30%)** — YouTube view velocity relative to live audience;
+  content demand outpacing the live scene is the classic pre-breakout pattern
+- **Creator saturation (20%)** — viewers per channel; a big audience split across
+  few creators means low competition for a new entrant
+- **Room to grow (10%)** — smaller games have more headroom
+
+Verdict tiers: `prime entry window` (75+) → `strong signal` (55+) → `on the radar`
+(35+) → `early whisper`. Each card lists the concrete reasons behind its score.
+These are heuristic early signals, not guarantees.
 
 ### Why no TikTok / Instagram Reels?
 

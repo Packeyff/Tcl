@@ -66,6 +66,42 @@ const BASE_GAMES = [
       ['Nickmercs', 17000], ['TimTheTatman', 15000], ['Swagg', 8000], ['Aydan', 6000], ['JoeWo', 3000],
     ],
   },
+  // ---- Smaller, fast-rising games (feed the Breakout Radar) ----
+  {
+    name: 'ARC Raiders',
+    boxArt: 'ARC%20Raiders',
+    viewers: 38000, channels: 310, ytViews: 9_500_000, ytVelocity: 610_000, ytVideos: 6,
+    growthPct: 142,
+    streamers: [['shroud', 12000], ['DrLupo', 7000], ['CohhCarnage', 4000]],
+  },
+  {
+    name: 'REPO',
+    boxArt: 'REPO',
+    viewers: 12000, channels: 180, ytViews: 4_800_000, ytVelocity: 210_000, ytVideos: 4,
+    growthPct: 210,
+    streamers: [['insym', 4000], ['8bitryan', 2500], ['CaseOh', 2000]],
+  },
+  {
+    name: 'Schedule I',
+    boxArt: 'Schedule%20I',
+    viewers: 22000, channels: 260, ytViews: 7_200_000, ytVelocity: 330_000, ytVideos: 5,
+    growthPct: 118,
+    streamers: [['Sodapoppin', 6000], ['Forsen', 4500], ['DisguisedToast', 3000]],
+  },
+  {
+    name: 'Deadlock',
+    boxArt: 'Deadlock',
+    viewers: 29000, channels: 410, ytViews: 5_100_000, ytVelocity: 280_000, ytVideos: 4,
+    growthPct: 85,
+    streamers: [['Grubby', 8000], ['Avoidingthepuddle', 5000], ['Dendi', 3500]],
+  },
+  {
+    name: 'Hades II',
+    boxArt: 'Hades%20II',
+    viewers: 18000, channels: 350, ytViews: 3_200_000, ytVelocity: 150_000, ytVideos: 3,
+    growthPct: 64,
+    streamers: [['Haelian', 3500], ['Vorime', 2000], ['Cristina Vee', 1500]],
+  },
 ];
 
 function jitter(n, pct = 0.06) {
@@ -103,7 +139,15 @@ function getMockData() {
     ])
   );
 
-  return { games, youtubeByGame };
+  // Simulated ~1h viewer growth (live mode measures this from real snapshots).
+  const growthByGame = new Map(
+    BASE_GAMES.map((g) => [
+      g.name,
+      { pct: jitter(g.growthPct ?? 5, 0.15), known: true },
+    ])
+  );
+
+  return { games, youtubeByGame, growthByGame };
 }
 
 module.exports = { getMockData };

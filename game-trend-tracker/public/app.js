@@ -52,6 +52,50 @@ function streamerChip(s) {
   </a>`;
 }
 
+function renderBreakout(list) {
+  const el = document.getElementById('breakout');
+  if (!list || !list.length) {
+    el.classList.add('hidden');
+    return;
+  }
+  el.classList.remove('hidden');
+  el.innerHTML = `
+    <div class="section-head">
+      <h2>🚀 Breakout Radar</h2>
+      <p>Up-and-coming games with the best odds of becoming the next big thing — spot the wave before it peaks and get in early.</p>
+    </div>
+    <div class="breakout-grid">
+      ${list.map(breakoutCard).join('')}
+    </div>`;
+}
+
+function breakoutCard(b) {
+  const verdictClass = b.verdict.split(' ')[0]; // prime | strong | on | early
+  const growth =
+    b.growthPct === null
+      ? '<span class="b-growth unknown">growth: tracking…</span>'
+      : `<span class="b-growth ${b.growthPct >= 0 ? 'up' : 'down'}">${b.growthPct >= 0 ? '+' : ''}${b.growthPct}% viewers (~1h)</span>`;
+  return `
+    <div class="breakout-card">
+      <div class="verdict ${verdictClass}">${esc(b.verdict)}</div>
+      <div class="b-head">
+        <img class="boxart" src="${esc(b.boxArtUrl)}" alt="${esc(b.name)}" onerror="this.style.visibility='hidden'">
+        <div>
+          <h3>${esc(b.name)}</h3>
+          ${growth}
+        </div>
+        <div class="b-score" title="Breakout score">${b.breakoutScore}</div>
+      </div>
+      <div class="b-stats">
+        <span><b>${fmt(b.concurrentViewers)}</b> live</span>
+        <span><b>${fmt(b.channelCount)}</b> channels</span>
+        <span><b>${b.viewersPerChannel}</b> viewers/channel</span>
+        <span><b>${fmt(b.viewVelocityPerHour)}/hr</b> buzz</span>
+      </div>
+      <div class="b-reasons">${b.reasons.map((r) => `<span>${esc(r)}</span>`).join('')}</div>
+    </div>`;
+}
+
 function renderCard(g, maxScore) {
   return `
     <article class="game-card">
@@ -85,9 +129,11 @@ async function refresh() {
     document.getElementById('last-updated').textContent =
       'Updated ' + new Date(data.generatedAt).toLocaleTimeString();
     document.getElementById('methodology').textContent = data.methodology;
+    document.getElementById('breakout-note').textContent = data.breakoutNote || '';
 
     const [top, ...rest] = data.games;
     if (top) renderSpotlight(top);
+    renderBreakout(data.breakout);
 
     const maxScore = Math.max(...data.games.map((g) => g.trendScore), 1);
     document.getElementById('game-list').innerHTML = rest.map((g) => renderCard(g, maxScore)).join('');
