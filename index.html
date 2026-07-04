@@ -1,819 +1,954 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TCL TV Comparison — 2025 / 2026 Lineup</title>
-  <style>
-    :root {
-      --bg:        #0b0d14;
-      --bg-card:   #131620;
-      --bg-hover:  #1a1e2e;
-      --bg-filter: rgba(11,13,20,0.94);
-      --bg-tray:   #0f1120;
-      --text:      #edf0f8;
-      --text-2:    #7b87a0;
-      --text-3:    #40495e;
-      --accent:    #3b82f6;
-      --acc2:      #2563eb;
-      --gold:      #f59e0b;
-      --gold-bg:   rgba(245,158,11,0.1);
-      --border:    #1c2133;
-      --border2:   #252c3d;
-      --r:         14px;
-      --r2:        8px;
-      --r3:        5px;
-      --sh-card:   0 4px 24px rgba(0,0,0,0.55);
-      --sh-tray:   0 -8px 40px rgba(0,0,0,0.65);
-    }
-    [data-theme="light"] {
-      --bg:        #eef1f8;
-      --bg-card:   #ffffff;
-      --bg-hover:  #f4f7ff;
-      --bg-filter: rgba(238,241,248,0.95);
-      --bg-tray:   #ffffff;
-      --text:      #0e1422;
-      --text-2:    #4b5563;
-      --text-3:    #9ca3af;
-      --border:    #dde2ee;
-      --border2:   #c9d0e2;
-      --sh-card:   0 2px 16px rgba(0,0,0,0.08);
-      --sh-tray:   0 -4px 24px rgba(0,0,0,0.1);
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vault Command — Destiny 2 Loadout Manager</title>
+<style>
+:root{
+  --bg:#0d0f14; --panel:#161a22; --panel2:#1c212c; --line:#2a3140;
+  --txt:#e8eaf0; --dim:#9aa3b5; --accent:#f5b83d; --good:#59d98c; --bad:#e5645f;
+  --exotic:#ceae33; --legendary:#7c4f96; --rare:#5076a3;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--txt);font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding-bottom:80px}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+input,select,textarea{font:inherit;color:var(--txt);background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:6px 10px}
+input:focus,select:focus,textarea:focus{outline:1px solid var(--accent)}
+h2{font-size:15px;text-transform:uppercase;letter-spacing:.12em;color:var(--dim);margin:26px 0 10px;border-bottom:1px solid var(--line);padding-bottom:6px}
+h3{font-size:14px;margin:14px 0 8px}
+.btn{background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:7px 14px;font-weight:600}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:#14100a;border-color:var(--accent)}
+.btn.danger{border-color:#6b3a38;color:var(--bad)}
+.btn.sm{padding:3px 9px;font-size:12px;font-weight:500}
 
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background .25s,color .25s}
-    .wrap{max-width:1440px;margin:0 auto;padding:0 1.4rem}
+/* header */
+header{position:sticky;top:0;z-index:50;background:rgba(13,15,20,.95);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:10px 18px}
+.hrow{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{font-weight:800;font-size:16px;letter-spacing:.04em;white-space:nowrap}
+.brand em{color:var(--accent);font-style:normal}
+.brand small{display:block;font-size:10px;font-weight:500;color:var(--dim);letter-spacing:.15em;text-transform:uppercase}
+#charTabs{display:flex;gap:8px}
+.ctab{display:flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:5px 12px}
+.ctab.active{border-color:var(--accent);background:var(--panel2)}
+.ctab .em{font-size:20px}
+.ctab .nm{font-weight:700;font-size:13px;text-align:left;line-height:1.2}
+.ctab .pw{font-size:11px;color:var(--accent);font-weight:600}
+.searchwrap{flex:1;min-width:220px;position:relative}
+#searchBox{width:100%;padding:8px 90px 8px 12px}
+#matchCount{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--dim)}
+nav{display:flex;gap:2px;margin-top:8px;overflow-x:auto}
+nav .tab{padding:7px 14px;font-weight:600;color:var(--dim);border-bottom:2px solid transparent;white-space:nowrap}
+nav .tab.active{color:var(--txt);border-color:var(--accent)}
+.gear{font-size:18px;padding:6px}
 
-    /* ── HEADER ── */
-    .hdr{background:var(--bg-card);border-bottom:1px solid var(--border);padding:.85rem 0;position:sticky;top:0;z-index:200;backdrop-filter:blur(12px)}
-    .hdr .wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem}
-    .logo{display:flex;align-items:center;gap:.6rem}
-    .logo-mark{background:var(--accent);color:#fff;font-weight:900;font-size:.68rem;letter-spacing:.09em;padding:3px 8px;border-radius:4px}
-    .logo h1{font-size:1.1rem;font-weight:800;letter-spacing:-.02em}
-    .logo-sub{font-size:.72rem;color:var(--text-3);margin-top:.1rem}
-    .theme-btn{background:var(--border);border:none;border-radius:999px;padding:.38rem .85rem;font-size:.78rem;color:var(--text-2);cursor:pointer;display:flex;align-items:center;gap:.4rem;transition:all .15s}
-    .theme-btn:hover{background:var(--accent);color:#fff}
+main{max-width:1200px;margin:0 auto;padding:8px 18px}
 
-    /* ── FILTER BAR ── */
-    .fbar{background:var(--bg-filter);border-bottom:1px solid var(--border);padding:.6rem 0;position:sticky;top:52px;z-index:100;backdrop-filter:blur(12px)}
-    .fbar .wrap{display:flex;flex-wrap:wrap;gap:.55rem;align-items:center}
-    .fg{display:flex;align-items:center;gap:.3rem}
-    .fl{font-size:.64rem;font-weight:800;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
-    .fbg{display:flex;gap:.12rem}
-    .fb{background:transparent;border:1px solid var(--border2);border-radius:var(--r2);color:var(--text-2);font-size:.72rem;font-weight:500;padding:.26rem .52rem;cursor:pointer;transition:all .12s;white-space:nowrap}
-    .fb:hover{border-color:var(--accent);color:var(--accent)}
-    .fb.on{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
-    .fdiv{width:1px;height:20px;background:var(--border);flex-shrink:0}
-    .sort-sel{background:var(--bg-card);border:1px solid var(--border2);border-radius:var(--r2);color:var(--text);font-size:.72rem;padding:.26rem .52rem;cursor:pointer;outline:none}
-    .sort-sel:focus{border-color:var(--accent)}
-    .clr-btn{background:transparent;border:1px solid var(--border2);border-radius:var(--r2);color:var(--text-3);font-size:.7rem;padding:.26rem .52rem;cursor:pointer;transition:all .12s;margin-left:auto}
-    .clr-btn:hover{border-color:#ef4444;color:#ef4444}
+/* item tiles */
+.row{display:flex;gap:14px;align-items:flex-start;margin-bottom:10px}
+.rowlabel{width:88px;flex-shrink:0;font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;padding-top:8px}
+.eqslot{flex-shrink:0}
+.grid{display:flex;flex-wrap:wrap;gap:6px}
+.item{position:relative;width:52px;height:52px;background:var(--panel2);border:2px solid var(--line);border-radius:5px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:22px;user-select:none}
+.item.big{width:66px;height:66px;font-size:30px}
+.item:hover{transform:scale(1.06);z-index:2}
+.item.t-Exotic{border-color:var(--exotic);background:linear-gradient(160deg,#2b2510,var(--panel2))}
+.item.t-Legendary{border-color:var(--legendary);background:linear-gradient(160deg,#241a2c,var(--panel2))}
+.item.t-Rare{border-color:var(--rare)}
+.item.equipped{outline:2px solid var(--accent);outline-offset:2px}
+.item.dimmed{opacity:.14;filter:grayscale(1)}
+.item .pow{position:absolute;bottom:0;right:0;font-size:9px;font-weight:700;background:rgba(0,0,0,.75);padding:0 3px;border-radius:3px 0 3px 0;color:#ffd97a}
+.item .el{position:absolute;top:2px;left:2px;width:9px;height:9px;border-radius:50%;border:1px solid rgba(0,0,0,.5)}
+.item .tg{position:absolute;top:-1px;right:1px;font-size:10px}
+.item .lk{position:absolute;bottom:0;left:1px;font-size:9px}
+.item .cls{position:absolute;top:1px;right:2px;font-size:8px;font-weight:800;color:var(--dim)}
+.emptyslot{width:66px;height:66px;border:2px dashed var(--line);border-radius:5px;display:flex;align-items:center;justify-content:center;color:var(--line);font-size:11px}
+.dropzone.dragover{outline:2px dashed var(--accent);outline-offset:4px;border-radius:8px}
 
-    /* ── MAIN ── */
-    main{padding:1.4rem 0 7rem}
-    .rbar{margin-bottom:1rem}
-    #rcount{font-size:.78rem;color:var(--text-3)}
+/* cards & chips */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px}
+.card.sel{border-color:var(--accent)}
+.card h4{font-size:15px;display:flex;align-items:center;gap:8px}
+.card .cat{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.1em}
+.card p{font-size:12px;color:var(--dim);margin:6px 0}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.chip{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;background:var(--panel2);border:1px solid var(--line);text-transform:uppercase;letter-spacing:.05em}
+.chip.champ{border-color:#8a4b45;color:#f0a09b}
+.chip.surge{border-color:#7a6a2e;color:#ffd97a}
 
-    /* ── GRID ── */
-    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:1rem}
+/* stats */
+.statrow{display:flex;align-items:center;gap:8px;margin:3px 0;font-size:12px}
+.statrow .sn{width:80px;color:var(--dim)}
+.statrow .bar{flex:1;height:8px;background:var(--panel2);border-radius:4px;overflow:hidden}
+.statrow .bar i{display:block;height:100%;background:var(--accent)}
+.statrow .sv{width:30px;text-align:right;font-weight:700}
 
-    /* ── CARD ── */
-    .card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:1.1rem;display:flex;flex-direction:column;gap:.75rem;transition:all .18s;position:relative;overflow:hidden}
-    .card:hover{background:var(--bg-hover);border-color:var(--border2);transform:translateY(-2px);box-shadow:var(--sh-card)}
-    .card.sel{border-color:var(--accent);background:var(--bg-hover)}
-    .card.sel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),#60a5fa)}
+/* overlay */
+#overlay{position:fixed;inset:0;background:rgba(0,0,0,.68);display:none;align-items:flex-start;justify-content:center;z-index:100;overflow-y:auto;padding:40px 16px}
+#overlay.show{display:flex}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;width:100%;max-width:460px;overflow:hidden}
+.panel.wide{max-width:840px}
+.phead{padding:14px 18px;border-bottom:1px solid var(--line)}
+.phead.t-Exotic{background:linear-gradient(120deg,#3d3413,var(--panel))}
+.phead.t-Legendary{background:linear-gradient(120deg,#31203d,var(--panel))}
+.phead.t-Rare{background:linear-gradient(120deg,#1e2c3d,var(--panel))}
+.phead h3{margin:0;font-size:18px}
+.phead .sub{font-size:12px;color:var(--dim)}
+.pbody{padding:16px 18px}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.tagbtns{display:flex;gap:6px;margin-top:10px}
+.tagbtns button{font-size:16px;padding:4px 8px;border:1px solid var(--line);border-radius:6px;opacity:.45}
+.tagbtns button.on{opacity:1;border-color:var(--accent);background:var(--panel2)}
+.perk{display:inline-block;font-size:11px;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:2px 9px;margin:2px 3px 2px 0}
 
-    .chead{display:flex;align-items:flex-start;justify-content:space-between}
-    .cmodel{font-size:1.45rem;font-weight:900;letter-spacing:-.03em;line-height:1}
-    .csub{font-size:.7rem;color:var(--text-3);margin-top:.18rem}
+/* table */
+table{width:100%;border-collapse:collapse;font-size:12px}
+th,td{padding:6px 8px;text-align:left;border-bottom:1px solid var(--line)}
+th{color:var(--dim);text-transform:uppercase;font-size:10px;letter-spacing:.08em;cursor:pointer;white-space:nowrap;user-select:none}
+tr:hover td{background:var(--panel2)}
+.tablewrap{overflow-x:auto;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:4px 10px 10px}
+.bulkbar{display:flex;gap:8px;align-items:center;margin:10px 0;flex-wrap:wrap;font-size:12px;color:var(--dim)}
 
-    .bdg-row{display:flex;flex-wrap:wrap;gap:.26rem}
-    .bdg{font-size:.6rem;font-weight:800;padding:2px 6px;border-radius:var(--r3);text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
-    .bdg-26{background:rgba(245,158,11,.12);color:#f59e0b;border:1px solid rgba(245,158,11,.25)}
-    .bdg-25{background:rgba(99,102,241,.1);color:#818cf8;border:1px solid rgba(99,102,241,.2)}
-    .bdg-mini{background:rgba(124,58,237,.12);color:#a78bfa;border:1px solid rgba(124,58,237,.25)}
-    .bdg-sqd{background:rgba(16,185,129,.12);color:#34d399;border:1px solid rgba(16,185,129,.25)}
-    .bdg-rgb{background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(239,68,68,.25)}
-    .bdg-8k{background:rgba(245,158,11,.12);color:#fbbf24;border:1px solid rgba(245,158,11,.25)}
-    .bdg-game{background:rgba(16,185,129,.1);color:#10b981;border:1px solid rgba(16,185,129,.22)}
-    .bdg-bo{background:rgba(59,130,246,.1);color:#60a5fa;border:1px solid rgba(59,130,246,.22)}
-
-    .sg{display:grid;grid-template-columns:1fr 1fr;gap:.45rem .7rem}
-    .si{display:flex;flex-direction:column;gap:.08rem}
-    .sk{font-size:.6rem;font-weight:800;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em}
-    .sv{font-size:.82rem;font-weight:600;color:var(--text)}
-    .sv.hi{color:var(--accent)}
-    .sv.gold{color:var(--gold)}
-
-    .slabel{font-size:.6rem;font-weight:800;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.28rem}
-    .pills{display:flex;flex-wrap:wrap;gap:.22rem}
-    .hpill{font-size:.58rem;font-weight:700;padding:2px 6px;border-radius:4px;background:rgba(59,130,246,.1);color:#60a5fa;border:1px solid rgba(59,130,246,.2)}
-    .spill{font-size:.65rem;font-weight:600;padding:2px 6px;border-radius:4px;background:var(--bg);border:1px solid var(--border2);color:var(--text-2)}
-
-    .cbtn{margin-top:auto;background:transparent;border:1px solid var(--accent);border-radius:var(--r2);color:var(--accent);font-size:.78rem;font-weight:700;padding:.48rem;cursor:pointer;transition:all .14s;width:100%;display:flex;align-items:center;justify-content:center;gap:.32rem}
-    .cbtn:hover:not(:disabled){background:var(--accent);color:#fff}
-    .cbtn.on{background:var(--accent);color:#fff}
-    .cbtn:disabled{opacity:.32;cursor:not-allowed;border-color:var(--border2);color:var(--text-3)}
-
-    /* ── TRAY ── */
-    .tray{position:fixed;bottom:0;left:0;right:0;background:var(--bg-tray);border-top:1px solid var(--border2);box-shadow:var(--sh-tray);padding:.6rem 0;transform:translateY(110%);transition:transform .3s cubic-bezier(.34,1.56,.64,1);z-index:150}
-    .tray.vis{transform:translateY(0)}
-    .tray .wrap{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap}
-    .tlabel{font-size:.66rem;font-weight:800;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
-    .tchips{display:flex;gap:.38rem;flex:1;flex-wrap:wrap}
-    .tchip{display:flex;align-items:center;gap:.3rem;background:rgba(59,130,246,.1);border:1px solid var(--accent);border-radius:999px;padding:.22rem .6rem;font-size:.76rem;font-weight:700;color:var(--accent)}
-    .tx{background:none;border:none;cursor:pointer;color:var(--text-3);font-size:.88rem;line-height:1;padding:0;transition:color .12s}
-    .tx:hover{color:#ef4444}
-    .tacts{display:flex;gap:.45rem;margin-left:auto}
-    .tbtn{border:none;border-radius:var(--r2);font-size:.76rem;font-weight:700;padding:.4rem .8rem;cursor:pointer;transition:all .12s}
-    .tbtn-clr{background:transparent;border:1px solid var(--border2);color:var(--text-2)}
-    .tbtn-clr:hover{border-color:#ef4444;color:#ef4444}
-    .tbtn-go{background:var(--accent);color:#fff}
-    .tbtn-go:hover{background:var(--acc2)}
-
-    /* ── COMPARISON ── */
-    .csec{margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--border)}
-    .csec h2{font-size:1.1rem;font-weight:800;margin-bottom:.9rem}
-    .cscroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--border);border-radius:var(--r)}
-    .ctable{min-width:480px}
-
-    .crow-hdr{display:grid;background:var(--bg-card);border-bottom:2px solid var(--border2)}
-    .chdr-cell{padding:.8rem .9rem;font-weight:700;border-right:1px solid var(--border);display:flex;align-items:center}
-    .chdr-cell:first-child{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--text-3)}
-    .chdr-cell:last-child{border-right:none}
-    .chdr-model{font-size:1rem;font-weight:900;letter-spacing:-.02em}
-    .chdr-sub{font-size:.67rem;color:var(--text-2);margin-top:.1rem;font-weight:400}
-    .crmv{margin-left:auto;background:none;border:none;color:var(--text-3);cursor:pointer;font-size:.78rem;padding:.18rem .38rem;border-radius:4px;transition:all .12s}
-    .crmv:hover{background:rgba(239,68,68,.1);color:#ef4444}
-
-    .crow{display:grid}
-    .crow:nth-child(odd) .ccell,.crow:nth-child(odd) .clbl{background:rgba(255,255,255,.025)}
-    [data-theme="light"] .crow:nth-child(odd) .ccell,[data-theme="light"] .crow:nth-child(odd) .clbl{background:rgba(0,0,0,.025)}
-
-    .clbl{padding:.6rem .9rem;font-size:.73rem;font-weight:600;color:var(--text-2);border-right:1px solid var(--border);display:flex;align-items:center;min-width:148px}
-    .ccell{padding:.6rem .9rem;font-size:.8rem;color:var(--text);border-right:1px solid var(--border);display:flex;align-items:center;position:relative;transition:background .12s}
-    .ccell:last-child,.clbl:last-child{border-right:none}
-    .ccell.best{background:var(--gold-bg)!important}
-    .ccell.best .cv{color:var(--gold);font-weight:700}
-    .best-tag{position:absolute;top:3px;right:5px;font-size:.52rem;font-weight:900;text-transform:uppercase;letter-spacing:.07em;color:var(--gold);background:var(--bg-card);border:1px solid rgba(245,158,11,.4);padding:1px 4px;border-radius:3px}
-    .cv-na{color:var(--text-3);font-style:italic}
-    .cv-pills{display:flex;flex-wrap:wrap;gap:.18rem}
-
-    .pnote{margin-top:.9rem;font-size:.7rem;color:var(--text-3);text-align:center}
-
-    /* ── TECH GUIDE ── */
-    .tguide{background:var(--bg-card);border-bottom:1px solid var(--border)}
-    .tguide .wrap{padding-top:.55rem;padding-bottom:.55rem}
-    .tg-toggle{width:100%;background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:.75rem;padding:.45rem 0;color:var(--text)}
-    .tg-toggle:hover .tg-hint{color:var(--accent)}
-    .tg-badge{font-size:.6rem;font-weight:900;text-transform:uppercase;letter-spacing:.09em;padding:2px 7px;border-radius:3px;background:linear-gradient(135deg,#7c3aed,#3b82f6);color:#fff}
-    .tg-title{font-size:.82rem;font-weight:700}
-    .tg-hint{font-size:.75rem;color:var(--text-3);margin-left:auto;transition:color .15s}
-    .tg-chevron{font-size:.7rem;color:var(--text-3);transition:transform .25s}
-    .tg-chevron.open{transform:rotate(180deg)}
-
-    .tg-panel{display:none;padding:.9rem 0 1.1rem}
-    .tg-panel.open{display:block}
-
-    .tg-grid{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:0;align-items:stretch}
-    .tg-col{border:1px solid var(--border2);border-radius:var(--r);padding:.9rem 1rem;display:flex;flex-direction:column;gap:.5rem}
-    .tg-col-qd{border-color:var(--border2)}
-    .tg-col-sqd{border-color:#7c3aed;background:rgba(124,58,237,.04)}
-    .tg-col-rgb{border-color:#ef4444;background:rgba(239,68,68,.04)}
-
-    .tg-arrow-col{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 .6rem;gap:.25rem}
-    .tg-arrow-line{width:1px;flex:1;background:var(--border2)}
-    .tg-arrow-txt{font-size:.58rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--text-3);writing-mode:vertical-rl;text-orientation:mixed;white-space:nowrap}
-    .tg-arrow-head{color:var(--text-3);font-size:.7rem}
-
-    .tg-tier{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--text-3)}
-    .tg-name{font-size:1rem;font-weight:900;letter-spacing:-.02em;line-height:1.1}
-    .tg-name-sqd{color:#a78bfa}
-    .tg-name-rgb{color:#f87171}
-    .tg-sub{font-size:.7rem;color:var(--text-3);font-style:italic}
-
-    .tg-list{list-style:none;display:flex;flex-direction:column;gap:.3rem;margin-top:.2rem}
-    .tg-list li{font-size:.72rem;color:var(--text-2);display:flex;align-items:flex-start;gap:.4rem;line-height:1.35}
-    .tg-list li::before{content:'○';color:var(--text-3);flex-shrink:0;font-size:.65rem;margin-top:.1rem}
-    .tg-list li.win::before{content:'✓';color:#10b981;font-weight:900}
-    .tg-list li.win{color:var(--text)}
-
-    .tg-gamut{margin-top:.4rem;padding:.45rem .6rem;border-radius:var(--r2);font-size:.68rem;font-weight:700;text-align:center}
-    .tg-gamut-qd{background:rgba(99,102,241,.1);color:#818cf8;border:1px solid rgba(99,102,241,.2)}
-    .tg-gamut-sqd{background:rgba(124,58,237,.12);color:#a78bfa;border:1px solid rgba(124,58,237,.3)}
-    .tg-gamut-rgb{background:rgba(239,68,68,.1);color:#f87171;border:1px solid rgba(239,68,68,.3)}
-
-    .tg-btinfo{margin-top:.85rem;padding:.6rem .85rem;background:var(--gold-bg);border:1px solid rgba(245,158,11,.2);border-radius:var(--r2);font-size:.72rem;color:var(--text-2);line-height:1.5}
-    .tg-btinfo strong{color:var(--gold)}
-
-    @media(max-width:780px){
-      .tg-grid{grid-template-columns:1fr;grid-template-rows:auto}
-      .tg-arrow-col{flex-direction:row;padding:.3rem 0;writing-mode:initial}
-      .tg-arrow-line{width:auto;height:1px;flex:1}
-      .tg-arrow-txt{writing-mode:initial}
-    }
-
-    /* card color gamut line */
-    .cgamut{display:flex;align-items:center;gap:.4rem;padding:.35rem .5rem;border-radius:var(--r2);font-size:.68rem;font-weight:700}
-    .cgamut-qd{background:rgba(99,102,241,.08);color:#818cf8;border:1px solid rgba(99,102,241,.18)}
-    .cgamut-sqd{background:rgba(124,58,237,.1);color:#a78bfa;border:1px solid rgba(124,58,237,.25)}
-    .cgamut-rgb{background:rgba(239,68,68,.08);color:#f87171;border:1px solid rgba(239,68,68,.22)}
-    .cgamut-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-    .cgamut-qd .cgamut-dot{background:#818cf8}
-    .cgamut-sqd .cgamut-dot{background:#a78bfa}
-    .cgamut-rgb .cgamut-dot{background:#f87171}
-
-    /* ── NO RESULTS ── */
-    .nores{grid-column:1/-1;text-align:center;padding:4rem 2rem;color:var(--text-3)}
-
-    /* ── SCROLLBAR ── */
-    ::-webkit-scrollbar{width:5px;height:5px}
-    ::-webkit-scrollbar-track{background:transparent}
-    ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
-    ::-webkit-scrollbar-thumb:hover{background:var(--text-3)}
-
-    /* ── RESPONSIVE ── */
-    @media(max-width:640px){
-      .grid{grid-template-columns:1fr}
-      .fbar .wrap{gap:.4rem}
-      .fl{display:none}
-      .clbl{min-width:108px;font-size:.67rem;padding:.5rem .6rem}
-      .ccell{padding:.5rem .6rem;font-size:.75rem}
-      .logo-sub{display:none}
-    }
-    @media(max-width:900px){.clr-btn{margin-left:0}}
-  </style>
+/* misc */
+.banner{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:8px;padding:12px 16px;font-size:13px;color:var(--dim);margin:14px 0}
+.banner b{color:var(--txt)}
+#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#242b38;border:1px solid var(--accent);padding:10px 20px;border-radius:8px;font-weight:600;display:none;z-index:200;max-width:90vw}
+.flex{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.spread{justify-content:space-between}
+.muted{color:var(--dim);font-size:12px}
+.why{font-size:11px;color:var(--good);margin-top:3px}
+.recblock{display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap;margin-bottom:12px}
+.recpick{width:150px}
+.recpick .nm{font-size:12px;font-weight:700;margin-top:4px}
+label.opt{display:flex;align-items:center;gap:8px;font-size:13px;margin:6px 0}
+.field{margin:10px 0}
+.field label{display:block;font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+.field select,.field input[type=text]{width:100%}
+.tiers{display:flex;gap:4px;margin:8px 0}
+.tierbox{background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:4px 8px;font-size:11px;text-align:center}
+.tierbox b{display:block;font-size:15px;color:var(--accent)}
+@media(max-width:640px){.rowlabel{width:58px;font-size:9px}.item{width:46px;height:46px;font-size:19px}.item.big,.emptyslot{width:56px;height:56px}}
+</style>
 </head>
 <body>
 
-<header class="hdr">
-  <div class="wrap">
-    <div class="logo">
-      <span class="logo-mark">TCL</span>
-      <div>
-        <h1>TV Comparison</h1>
-        <div class="logo-sub">2025 K-Series &amp; 2026 L-Series · 9 Models</div>
-      </div>
+<header>
+  <div class="hrow">
+    <div class="brand"><em>◆</em> VAULT COMMAND<small>Destiny 2 Loadout Manager</small></div>
+    <div id="charTabs"></div>
+    <div class="searchwrap">
+      <input id="searchBox" type="text" placeholder='Search: is:exotic  slot:power  element:solar  type:handcannon  power:>2000  tag:favorite  -is:junk' autocomplete="off">
+      <span id="matchCount"></span>
     </div>
-    <button class="theme-btn" id="theme-btn">
-      <span id="tico">☀️</span><span id="tlbl">Light mode</span>
-    </button>
+    <button class="gear" data-act="settings" title="Settings">⚙️</button>
   </div>
+  <nav id="navTabs"></nav>
 </header>
 
-<nav class="fbar" aria-label="Filters">
-  <div class="wrap">
-    <div class="fg">
-      <span class="fl">Size</span>
-      <div class="fbg" id="fg-size">
-        <button class="fb on" data-v="">Any</button>
-        <button class="fb" data-v="55">55"</button>
-        <button class="fb" data-v="65">65"</button>
-        <button class="fb" data-v="75">75"</button>
-        <button class="fb" data-v="85">85"</button>
-        <button class="fb" data-v="98">98"</button>
-        <button class="fb" data-v="115">115"</button>
-      </div>
-    </div>
-    <div class="fdiv"></div>
-    <div class="fg">
-      <span class="fl">Panel</span>
-      <div class="fbg" id="fg-panel">
-        <button class="fb on" data-v="">Any</button>
-        <button class="fb" data-v="QLED">QLED</button>
-        <button class="fb" data-v="QD-Mini LED">QD-Mini LED</button>
-        <button class="fb" data-v="SQD Mini-LED">SQD</button>
-        <button class="fb" data-v="RGB Mini-LED">RGB</button>
-      </div>
-    </div>
-    <div class="fdiv"></div>
-    <div class="fg">
-      <span class="fl">Refresh</span>
-      <div class="fbg" id="fg-refresh">
-        <button class="fb on" data-v="">Any</button>
-        <button class="fb" data-v="60">60Hz</button>
-        <button class="fb" data-v="120">120Hz</button>
-        <button class="fb" data-v="144">144Hz</button>
-      </div>
-    </div>
-    <div class="fdiv"></div>
-    <div class="fg">
-      <span class="fl">Year</span>
-      <div class="fbg" id="fg-year">
-        <button class="fb on" data-v="">Any</button>
-        <button class="fb" data-v="2025">2025</button>
-        <button class="fb" data-v="2026">2026</button>
-      </div>
-    </div>
-    <div class="fdiv"></div>
-    <div class="fg">
-      <span class="fl">Gaming</span>
-      <div class="fbg" id="fg-gaming">
-        <button class="fb on" data-v="">Any</button>
-        <button class="fb" data-v="1">Gaming Ready</button>
-      </div>
-    </div>
-    <div class="fdiv"></div>
-    <div class="fg">
-      <span class="fl">Sort</span>
-      <select class="sort-sel" id="sort-sel">
-        <option value="model-asc">Model A–Z</option>
-        <option value="year-asc">Year (Old–New)</option>
-        <option value="year-desc">Year (New–Old)</option>
-        <option value="nits-desc">Brightness ↓</option>
-        <option value="zones-desc">Dimming Zones ↓</option>
-      </select>
-    </div>
-    <button class="clr-btn" id="clr-btn">Clear filters</button>
-  </div>
-</nav>
-
-<section class="tguide" id="tguide">
-  <div class="wrap">
-    <button class="tg-toggle" id="tg-toggle" aria-expanded="false" aria-controls="tg-panel">
-      <span class="tg-badge">Tech Guide</span>
-      <span class="tg-title">Why SQD Mini-LED is Superior to QD-Mini LED</span>
-      <span class="tg-hint">Click to expand</span>
-      <span class="tg-chevron" id="tg-chevron">▼</span>
-    </button>
-    <div class="tg-panel" id="tg-panel" role="region">
-      <div class="tg-grid">
-
-        <!-- QD-Mini LED column -->
-        <div class="tg-col tg-col-qd">
-          <div class="tg-tier">2025 · Standard</div>
-          <div class="tg-name">QD-Mini LED</div>
-          <div class="tg-sub">Models: QM6K, QM7K, QM8K, QM9K</div>
-          <ul class="tg-list">
-            <li>Standard Quantum Dot color filter</li>
-            <li>~97% DCI-P3 color gamut coverage</li>
-            <li>16-bit backlight controller</li>
-            <li>Halo Control dimming algorithm</li>
-            <li>65,536 dimming steps per zone</li>
-            <li>Visible blooming on bright highlights</li>
-          </ul>
-          <div class="tg-gamut tg-gamut-qd">~97% DCI-P3</div>
-        </div>
-
-        <!-- Arrow: QD → SQD -->
-        <div class="tg-arrow-col">
-          <div class="tg-arrow-line"></div>
-          <div class="tg-arrow-txt">Upgrade</div>
-          <div class="tg-arrow-head">▶</div>
-          <div class="tg-arrow-line"></div>
-        </div>
-
-        <!-- SQD Mini-LED column -->
-        <div class="tg-col tg-col-sqd">
-          <div class="tg-tier">2026 · Advanced</div>
-          <div class="tg-name tg-name-sqd">SQD Mini-LED</div>
-          <div class="tg-sub">Models: QM7L, QM8L, X11</div>
-          <ul class="tg-list">
-            <li class="win">Super Quantum Dots + CSOT Ultra Color Filter</li>
-            <li class="win">100% BT.2020 color gamut — wider than DCI-P3</li>
-            <li class="win">26-bit backlight controller (67M dimming steps)</li>
-            <li class="win">TSR AI Processor for adaptive scene optimization</li>
-            <li class="win">4× more color volume vs standard QD filter</li>
-            <li class="win">Dramatically reduced color crosstalk</li>
-          </ul>
-          <div class="tg-gamut tg-gamut-sqd">100% BT.2020 (Widest Color)</div>
-        </div>
-
-        <!-- Arrow: SQD → RGB -->
-        <div class="tg-arrow-col">
-          <div class="tg-arrow-line"></div>
-          <div class="tg-arrow-txt">Ultimate</div>
-          <div class="tg-arrow-head">▶</div>
-          <div class="tg-arrow-line"></div>
-        </div>
-
-        <!-- RGB Mini-LED column -->
-        <div class="tg-col tg-col-rgb">
-          <div class="tg-tier">2026 · Flagship</div>
-          <div class="tg-name tg-name-rgb">RGB Mini-LED</div>
-          <div class="tg-sub">Model: RM9L</div>
-          <ul class="tg-list">
-            <li class="win">Narrow Band RGB Ultra LEDs — no filter needed</li>
-            <li class="win">100% BT.2020 with zero filter light loss</li>
-            <li class="win">30-bit backlight controller (1B dimming steps)</li>
-            <li class="win">TSR AI Processor — same as SQD flagship tier</li>
-            <li class="win">Maximum achievable brightness per watt</li>
-            <li class="win">Zero color crosstalk between R, G, B channels</li>
-          </ul>
-          <div class="tg-gamut tg-gamut-rgb">100% BT.2020 · Zero Crosstalk</div>
-        </div>
-
-      </div>
-
-      <div class="tg-btinfo">
-        <strong>Backlight Controller Bits Explained:</strong> The bit-depth of the backlight controller determines how many distinct dimming steps each zone can produce.
-        QD-Mini LED's 16-bit controller offers 65,536 steps per zone.
-        SQD Mini-LED's 26-bit controller delivers over 67 million steps — meaning far smoother gradients from pure black to peak brightness, eliminating visible banding and crush artifacts.
-        RGB Mini-LED takes this further with a 30-bit controller (1 billion steps), the highest precision available in any consumer display.
-        <br><br>
-        <strong>TSR AI Processor:</strong> Exclusive to SQD and RGB Mini-LED models, the TSR (Temporal Super Resolution) AI chip analyzes each frame in real time, intelligently mapping backlight zones, enhancing upscaling, reducing motion blur, and applying per-scene HDR tone mapping that static algorithms cannot match.
-        <br><br>
-        <strong>BT.2020 vs DCI-P3:</strong> BT.2020 is the next-generation color standard that covers roughly 75% of all visible human color perception — significantly wider than DCI-P3 (~69%). Standard QLED and QD-Mini LED panels cover only ~97% of the smaller DCI-P3 space. SQD and RGB Mini-LED achieve 100% of the larger BT.2020 standard, unlocking colors that simply cannot be reproduced on previous-generation displays.
-      </div>
-    </div>
-  </div>
-</section>
-
-<main>
-  <div class="wrap">
-    <div class="rbar"><p id="rcount" aria-live="polite">Showing 9 models</p></div>
-    <div class="grid" id="grid" role="list"></div>
-
-    <section class="csec" id="csec" style="display:none">
-      <h2>Side-by-Side Comparison</h2>
-      <div class="cscroll">
-        <div class="ctable" id="ctable"></div>
-      </div>
-      <p class="pnote">* Specs based on official TCL listings. Dimming zone counts for QM9K are estimated. Nit values reflect advertised peak brightness on small HDR highlight windows.</p>
-    </section>
-  </div>
-</main>
-
-<div class="tray" id="tray">
-  <div class="wrap">
-    <span class="tlabel">Comparing</span>
-    <div class="tchips" id="tchips"></div>
-    <div class="tacts">
-      <button class="tbtn tbtn-clr" id="tclr">Clear all</button>
-      <button class="tbtn tbtn-go" id="tgo">View comparison ↓</button>
-    </div>
-  </div>
-</div>
+<main id="view"></main>
+<div id="overlay"></div>
+<div id="toast"></div>
+<input type="file" id="importFile" accept=".json" style="display:none">
 
 <script>
-// ─── TV DATA (verified specs) ────────────────────────────────────────────────
-const TVS = [
-  {
-    id:'qm5k', model:'QM5K', year:2025, tier:5, series:'Q-Series',
-    panel:'QLED', resolution:'4K', hz:60,
-    hdr:['Dolby Vision','HDR10+','HLG'],
-    hdmiPorts:4, hdmiVer:2.0, zones:500,
-    nits:1500, audioW:20, audioSys:'2.0 ch', audioBrand:null,
-    os:'Google TV', sizes:[43,50,55,65,75,85],
-    gaming:false,
-    colorGamut:'~90% DCI-P3', processor:'Standard', backlightBits:12,
-    note:'Entry-level QLED with up to 500 local dimming zones'
-  },
-  {
-    id:'qm6k', model:'QM6K', year:2025, tier:4, series:'Q-Series',
-    panel:'QD-Mini LED', resolution:'4K', hz:120,
-    hdr:['Dolby Vision IQ','HDR10+','HLG'],
-    hdmiPorts:4, hdmiVer:2.1, zones:500,
-    nits:2600, audioW:30, audioSys:'2.0 ch', audioBrand:null,
-    os:'Google TV', sizes:[43,50,55,65,75,85,98],
-    gaming:true,
-    colorGamut:'~97% DCI-P3', processor:'Halo Control', backlightBits:16,
-    note:'QD-Mini LED with Halo Control System to minimize blooming'
-  },
-  {
-    id:'qm7k', model:'QM7K', year:2025, tier:3, series:'Q-Series',
-    panel:'QD-Mini LED', resolution:'4K', hz:144,
-    hdr:['Dolby Vision IQ','HDR10+','HLG'],
-    hdmiPorts:4, hdmiVer:2.1, zones:2500,
-    nits:3000, audioW:40, audioSys:'2.1 ch', audioBrand:null,
-    os:'Google TV', sizes:[55,65,75,85],
-    gaming:true,
-    colorGamut:'~97% DCI-P3', processor:'Halo Control', backlightBits:16,
-    note:'Anti-reflective CrystGlow HVA panel · 2,500 dimming zones'
-  },
-  {
-    id:'qm8k', model:'QM8K', year:2025, tier:2, series:'Q-Series',
-    panel:'QD-Mini LED', resolution:'4K', hz:144,
-    hdr:['Dolby Vision IQ','HDR10+','HLG'],
-    hdmiPorts:4, hdmiVer:2.1, zones:5000,
-    nits:5000, audioW:60, audioSys:'2.1 ch Atmos', audioBrand:'Bang & Olufsen',
-    os:'Google TV', sizes:[55,65,75,85,98],
-    gaming:true,
-    colorGamut:'~97% DCI-P3', processor:'Halo Control', backlightBits:16,
-    note:'5,000+ dimming zones · Bang & Olufsen premium audio'
-  },
-  {
-    id:'qm9k', model:'QM9K', year:2025, tier:1, series:'Q-Series',
-    panel:'QD-Mini LED', resolution:'4K', hz:144,
-    hdr:['Dolby Vision IQ','HDR10+','HLG'],
-    hdmiPorts:4, hdmiVer:2.1, zones:8000,
-    nits:6500, audioW:70, audioSys:'2.1 ch Atmos', audioBrand:'Bang & Olufsen',
-    os:'Google TV', sizes:[65,75,85,98],
-    gaming:true,
-    colorGamut:'~97% DCI-P3', processor:'Halo Control', backlightBits:16,
-    note:'2025 flagship · 6,500 nits peak · advanced Halo Control System'
-  },
-  {
-    id:'qm7l', model:'QM7L', year:2026, tier:4, series:'Q-Series',
-    panel:'SQD Mini-LED', resolution:'4K', hz:144,
-    hdr:['Dolby Vision IQ','HDR10+','HLG'],
-    hdmiPorts:4, hdmiVer:2.1, zones:2100,
-    nits:3000, audioW:40, audioSys:'2.1 ch AtmosConnect', audioBrand:'Bang & Olufsen',
-    os:'Google TV', sizes:[55,65,75,85],
-    gaming:true,
-    colorGamut:'100% BT.2020', processor:'TSR AI', backlightBits:26,
-    note:'SQD Mini-LED · HVA 2.0 Pro Panel · 2,100+ zones · B&O audio'
-  },
-  {
-    id:'qm8l', model:'QM8L', year:2026, tier:3, series:'Q-Series',
-    panel:'SQD Mini-LED', resolution:'4K', hz:144,
-    hdr:['Dolby Vision 2.0 Max','HDR10+','HLG'],
-    hdmiPorts:4, hdmiVer:2.1, zones:4000,
-    nits:6000, audioW:60, audioSys:'2.1 ch Atmos FlexConnect', audioBrand:'Bang & Olufsen',
-    os:'Google TV', sizes:[55,65,75,85,98],
-    gaming:true,
-    colorGamut:'100% BT.2020', processor:'TSR AI', backlightBits:26,
-    note:'SQD Mini-LED · WHVA 2.0 Ultra Panel · Dolby Vision 2.0 Max · 4,000+ zones'
-  },
-  {
-    id:'rm9l', model:'RM9L', year:2026, tier:2, series:'R-Series',
-    panel:'RGB Mini-LED', resolution:'4K', hz:144,
-    hdr:['Dolby Vision IQ','HDR10+','HLG'],
-    hdmiPorts:4, hdmiVer:2.1, zones:5600,
-    nits:9000, audioW:80, audioSys:'2.1 ch Atmos', audioBrand:null,
-    os:'Google TV', sizes:[85,98,115],
-    gaming:true,
-    colorGamut:'100% BT.2020', processor:'TSR AI', backlightBits:30,
-    note:'RGB Mini-LED · Narrow Band RGB Ultra LEDs · 100% BT.2020 · up to 115"'
-  },
-  {
-    id:'x11l', model:'X11', year:2026, tier:1, series:'X-Series',
-    panel:'SQD Mini-LED', resolution:'8K', hz:144,
-    hdr:['Dolby Vision IQ','HDR10+','HLG'],
-    hdmiPorts:4, hdmiVer:2.1, zones:20736,
-    nits:10000, audioW:100, audioSys:'2.1 ch Atmos + Soundbar', audioBrand:'Bang & Olufsen',
-    os:'Google TV', sizes:[75,85,98],
-    gaming:true,
-    colorGamut:'100% BT.2020', processor:'TSR AI', backlightBits:26,
-    note:'8K SQD Mini-LED · WHVA 2.0 Ultra Panel · B&O soundbar + up-firing Atmos'
-  }
-];
-
-// ─── STATE ───────────────────────────────────────────────────────────────────
-const S = {
-  f:{ size:'',panel:'',hz:'',year:'',gaming:'' },
-  sort:'model-asc',
-  sel:[],
-  theme: localStorage.getItem('tcl-theme')||'dark'
+'use strict';
+/* ============================== constants ============================== */
+const SLOTS=['kinetic','energy','power','helmet','gauntlets','chest','legs','classitem'];
+const WEAPON_SLOTS=['kinetic','energy','power'];
+const ARMOR_SLOTS=['helmet','gauntlets','chest','legs','classitem'];
+const SLOT_LABEL={kinetic:'Kinetic',energy:'Energy',power:'Power',helmet:'Helmet',gauntlets:'Gauntlets',chest:'Chest',legs:'Legs',classitem:'Class Item'};
+const STATS=['mobility','resilience','recovery','discipline','intellect','strength'];
+const STAT_LABEL={mobility:'Mobility',resilience:'Resilience',recovery:'Recovery',discipline:'Discipline',intellect:'Intellect',strength:'Strength'};
+const EL_COLOR={kinetic:'#c8c8c8',solar:'#f0631e',arc:'#7aecf3',void:'#b184c5',stasis:'#4d88ff',strand:'#35e366'};
+const TAG_ICON={favorite:'★',keep:'🏷',infuse:'⚗',junk:'🗑',archive:'📦'};
+const TYPE_ICON={'Hand Cannon':'🔫','Pulse Rifle':'🌀','Auto Rifle':'🔩','Scout Rifle':'🔭','Submachine Gun':'💨','Sidearm':'🔧','Bow':'🏹','Fusion Rifle':'☄️','Sniper Rifle':'🎯','Shotgun':'💥','Grenade Launcher':'🧨','Rocket Launcher':'🚀','Linear Fusion Rifle':'⚡','Machine Gun':'⛓️','Sword':'🗡️',helmet:'🪖',gauntlets:'🧤',chest:'🦺',legs:'👢',classitem:'🎗️'};
+const CHAMPION_COUNTERS={barrier:['Auto Rifle','Pulse Rifle','Linear Fusion Rifle'],unstoppable:['Hand Cannon','Grenade Launcher','Scout Rifle'],overload:['Submachine Gun','Bow','Machine Gun']};
+const ROLES={
+ 'boss-dps':{types:['Rocket Launcher','Linear Fusion Rifle','Grenade Launcher','Sword'],label:'Strong boss damage'},
+ 'add-clear':{types:['Machine Gun','Auto Rifle','Submachine Gun','Grenade Launcher','Bow'],label:'Excellent add clear'},
+ 'duel':{types:['Hand Cannon','Pulse Rifle','Submachine Gun','Auto Rifle','Sidearm'],label:'Strong in duels'},
+ 'pvp-heavy':{types:['Rocket Launcher','Sword','Machine Gun'],label:'High-value PvP heavy'},
+ 'ranged':{types:['Scout Rifle','Bow','Pulse Rifle','Linear Fusion Rifle'],label:'Safe damage at range'},
+ 'invader':{types:['Linear Fusion Rifle','Sniper Rifle','Rocket Launcher'],label:'Counters invaders / bank pushes'}
 };
-
-// ─── COMPARISON ROWS ─────────────────────────────────────────────────────────
-const ROWS = [
-  { lbl:'Display Technology',  get:t=>({txt:t.panel}),                                    best:null },
-  { lbl:'Resolution',          get:t=>({txt:t.resolution+' UHD',num:t.resolution==='8K'?2:1}), best:1 },
-  { lbl:'Refresh Rate',        get:t=>({txt:t.hz+'Hz',num:t.hz}),                          best:1 },
-  { lbl:'Peak Brightness',     get:t=>({txt:t.nits.toLocaleString()+' nits',num:t.nits}),  best:1 },
-  { lbl:'Local Dimming Zones', get:t=>({txt:t.zones.toLocaleString()+' zones',num:t.zones}),best:1},
-  { lbl:'HDMI',                get:t=>({txt:t.hdmiPorts+'× HDMI '+t.hdmiVer,num:t.hdmiVer}),best:1},
-  { lbl:'HDR Formats',         get:t=>({pills:t.hdr,num:t.hdr.length}),                    best:1 },
-  { lbl:'Audio System',        get:t=>({txt:t.audioW+'W '+t.audioSys+(t.audioBrand?' · '+t.audioBrand:''),num:t.audioW}), best:1 },
-  { lbl:'Available Sizes',     get:t=>({sizes:t.sizes}),                                   best:null },
-  { lbl:'Color Gamut',         get:t=>({txt:t.colorGamut}),                                best:null },
-  { lbl:'AI Processor',        get:t=>({txt:t.processor}),                                 best:null },
-  { lbl:'Backlight Controller',get:t=>({txt:t.backlightBits+'-bit',num:t.backlightBits}),  best:1 },
-  { lbl:'Smart OS',            get:t=>({txt:t.os}),                                        best:null },
-  { lbl:'Model Year',          get:t=>({txt:String(t.year),num:t.year}),                   best:null },
+const CHARS=[
+ {id:'c_titan',cls:'titan',name:'Titan',em:'🛡️'},
+ {id:'c_hunter',cls:'hunter',name:'Hunter',em:'🏹'},
+ {id:'c_warlock',cls:'warlock',name:'Warlock',em:'🔮'}
+];
+const ACTIVITIES=[
+ {id:'vanguard',name:'Vanguard Ops',icon:'🎯',cat:'PvE · Playlist',desc:'Standard strike playlist. Speed and add clear win — bring your favorite blasters.',surges:['arc','solar'],champions:[],statW:{resilience:2,recovery:2,discipline:2,mobility:0,intellect:1,strength:1},roles:{energy:'add-clear',power:'add-clear'},focus:'Fast add clear & ability uptime'},
+ {id:'nightfall',name:'Nightfall',icon:'💀',cat:'PvE · Endgame',desc:'Champions, modifiers and real damage. Match the surge and bring champion counters.',surges:['solar','void'],champions:['barrier','unstoppable'],statW:{resilience:3,recovery:2,discipline:1,mobility:0,intellect:1,strength:0},roles:{power:'boss-dps'},focus:'Survivability + champion control'},
+ {id:'gm',name:'Grandmaster Nightfall',icon:'☠️',cat:'PvE · Pinnacle',desc:'Contest power, all champion types, instant deaths. Range and resilience are everything.',surges:['arc'],champions:['barrier','unstoppable','overload'],statW:{resilience:3,recovery:3,discipline:1,mobility:0,intellect:1,strength:0},roles:{kinetic:'ranged',power:'boss-dps'},focus:'Play at range, counter every champion'},
+ {id:'raid',name:'Raid',icon:'🏛️',cat:'PvE · 6-player',desc:'Encounter mechanics and DPS phases. Heavy boss damage plus reliable add clear.',surges:[],champions:[],statW:{resilience:3,recovery:2,discipline:1,mobility:0,intellect:2,strength:0},roles:{power:'boss-dps',energy:'add-clear'},focus:'Boss DPS phases + super uptime'},
+ {id:'dungeon',name:'Dungeon',icon:'🕳️',cat:'PvE · 3-player',desc:'Long solo-able encounters. Self-sufficiency, sustained DPS and recovery.',surges:[],champions:[],statW:{resilience:3,recovery:3,discipline:1,mobility:0,intellect:1,strength:0},roles:{power:'boss-dps',kinetic:'ranged'},focus:'Self-sufficiency & sustained DPS'},
+ {id:'lostsector',name:'Expert Lost Sector',icon:'🧭',cat:'PvE · Solo',desc:'Solo champion hunting for exotics. Counter both champion types or wipe.',surges:['void'],champions:['barrier','overload'],statW:{resilience:3,recovery:3,discipline:1,mobility:0,intellect:0,strength:0},roles:{power:'boss-dps'},focus:'Solo survivability + champion counters'},
+ {id:'onslaught',name:'Onslaught',icon:'🏰',cat:'PvE · Horde',desc:'50 waves of everything. Add clear above all, heavy for demolitions.',surges:['strand','arc'],champions:['unstoppable','overload'],statW:{resilience:2,recovery:2,discipline:3,mobility:0,intellect:1,strength:1},roles:{energy:'add-clear',power:'add-clear',kinetic:'add-clear'},focus:'Endless add clear & grenade uptime'},
+ {id:'gambit',name:'Gambit',icon:'🐍',cat:'PvE/PvP · Hybrid',desc:'Bank motes, burn bosses, delete invaders. One gun for adds, one for players.',surges:[],champions:[],statW:{resilience:2,recovery:2,discipline:2,mobility:1,intellect:1,strength:0},roles:{energy:'add-clear',power:'invader',kinetic:'ranged'},focus:'Add clear + invader counter'},
+ {id:'crucible',name:'Crucible',icon:'⚔️',cat:'PvP · Playlist',desc:'Player duels. TTK, handling and neutral game — leave the raid gear at home.',surges:[],champions:[],pvp:true,statW:{mobility:2,resilience:2,recovery:3,discipline:1,intellect:2,strength:0},roles:{kinetic:'duel',energy:'duel',power:'pvp-heavy'},focus:'Dueling weapons & fast recovery'},
+ {id:'trials',name:'Trials of Osiris',icon:'🏆',cat:'PvP · Pinnacle',desc:'Sweaty 3v3 elimination. Your absolute best dueling kit, no experiments.',surges:[],champions:[],pvp:true,statW:{mobility:2,resilience:3,recovery:3,discipline:1,intellect:2,strength:0},roles:{kinetic:'duel',energy:'duel',power:'pvp-heavy'},focus:'Peak dueling loadout'}
 ];
 
-// ─── HELPERS ─────────────────────────────────────────────────────────────────
-const $ = id => document.getElementById(id);
-const byId = id => TVS.find(t=>t.id===id);
+/* ============================== demo data ============================== */
+const ri=n=>Math.floor(Math.random()*n);
+const pick=a=>a[ri(a.length)];
+let _seq=1; const uid=()=>'i'+(_seq++)+'_'+Date.now().toString(36);
 
-function gamutCls(t){
-  if(t.panel==='RGB Mini-LED') return 'cgamut-rgb';
-  if(t.panel==='SQD Mini-LED') return 'cgamut-sqd';
-  if(t.panel==='QD-Mini LED')  return 'cgamut-qd';
-  return 'cgamut-qd';
+const WEAPON_DEFS=[
+ // name, type, slot, element, tier, intrinsic champion counter
+ ['Ace of Spades','Hand Cannon','kinetic','kinetic','Exotic',null],
+ ['Fatebringer (Timelost)','Hand Cannon','kinetic','kinetic','Legendary',null],
+ ['Midnight Coup','Hand Cannon','kinetic','kinetic','Legendary',null],
+ ['Outbreak Perfected','Pulse Rifle','kinetic','kinetic','Exotic',null],
+ ['The Messenger','Pulse Rifle','kinetic','kinetic','Legendary',null],
+ ['Hung Jury SR4','Scout Rifle','kinetic','kinetic','Legendary',null],
+ ['Wish-Ender','Bow','kinetic','kinetic','Exotic','barrier'],
+ ['Witherhoard','Grenade Launcher','kinetic','kinetic','Exotic',null],
+ ['Malfeasance','Hand Cannon','kinetic','kinetic','Exotic','unstoppable'],
+ ['Arbalest','Linear Fusion Rifle','kinetic','kinetic','Exotic','barrier'],
+ ['The Immortal','Submachine Gun','kinetic','strand','Legendary',null],
+ ['Quicksilver Storm','Auto Rifle','kinetic','strand','Exotic',null],
+ ['Verglas Curve','Bow','kinetic','stasis','Exotic',null],
+ ['Syncopation-53','Pulse Rifle','kinetic','stasis','Legendary',null],
+ ['Sunshot','Hand Cannon','energy','solar','Exotic',null],
+ ['Riskrunner','Submachine Gun','energy','arc','Exotic',null],
+ ['Trinity Ghoul','Bow','energy','arc','Exotic',null],
+ ['Graviton Lance','Pulse Rifle','energy','void','Exotic',null],
+ ['Le Monarque','Bow','energy','void','Exotic','overload'],
+ ['Calus Mini-Tool','Submachine Gun','energy','solar','Legendary',null],
+ ['IKELOS_SMG_v1.0.3','Submachine Gun','energy','arc','Legendary',null],
+ ['Funnelweb','Submachine Gun','energy','void','Legendary',null],
+ ['Forbearance','Grenade Launcher','energy','arc','Legendary',null],
+ ['Ammit AR2','Auto Rifle','energy','solar','Legendary',null],
+ ['Ros Arago IV','Auto Rifle','energy','arc','Legendary',null],
+ ['Nation of Beasts','Hand Cannon','energy','arc','Legendary',null],
+ ["Zealot's Reward",'Fusion Rifle','energy','void','Legendary',null],
+ ['Gjallarhorn','Rocket Launcher','power','solar','Exotic',null],
+ ['Apex Predator','Rocket Launcher','power','solar','Legendary',null],
+ ['The Hothead','Rocket Launcher','power','arc','Legendary',null],
+ ['Cataclysmic','Linear Fusion Rifle','power','solar','Legendary',null],
+ ['Stormchaser','Linear Fusion Rifle','power','arc','Legendary',null],
+ ['Taipan-4fr','Linear Fusion Rifle','power','void','Legendary',null],
+ ['Thunderlord','Machine Gun','power','arc','Exotic',null],
+ ['Commemoration','Machine Gun','power','void','Legendary',null],
+ ['Retrofit Escapade','Machine Gun','power','void','Legendary',null],
+ ['Falling Guillotine','Sword','power','void','Legendary',null],
+ ['The Lament','Sword','power','solar','Exotic','barrier'],
+ ['Regnant','Grenade Launcher','power','void','Legendary',null],
+ ['Parasite','Grenade Launcher','power','strand','Exotic',null]
+];
+const PERKS=['Outlaw','Rampage','Kill Clip','Feeding Frenzy','Firefly','Explosive Payload','Rapid Hit','Frenzy','Demolitionist','Voltshot','Incandescent','Destabilizing Rounds','Bait and Switch','Vorpal Weapon','Envious Assassin','Reconstruction',"Fourth Time's the Charm",'Auto-Loading Holster','Subsistence','One for All'];
+const MWS=['Range MW','Stability MW','Handling MW','Reload MW','Charge Time MW','Velocity MW'];
+const ARMOR_SETS={
+ titan:{sets:['Wild Hunt','Iron Truage','Prodigal Colossus','Crystocrene'],suffix:{helmet:'Helm',gauntlets:'Gauntlets',chest:'Plate',legs:'Greaves',classitem:'Mark'}},
+ hunter:{sets:['Wild Hunt','Iron Fellowship','Prodigal Shade','Crystocrene'],suffix:{helmet:'Mask',gauntlets:'Grips',chest:'Vest',legs:'Strides',classitem:'Cloak'}},
+ warlock:{sets:['Wild Hunt','Iron Remembrance','Prodigal Sage','Crystocrene'],suffix:{helmet:'Hood',gauntlets:'Gloves',chest:'Robes',legs:'Boots',classitem:'Bond'}}
+};
+const EXOTIC_ARMOR=[
+ ['Loreley Splendor Helm','titan','helmet',['resilience','recovery']],
+ ['Synthoceps','titan','gauntlets',['strength','resilience']],
+ ['Heart of Inmost Light','titan','chest',['resilience','discipline']],
+ ['Dunemarchers','titan','legs',['mobility','strength']],
+ ["Assassin's Cowl",'hunter','helmet',['mobility','recovery']],
+ ["Liar's Handshake",'hunter','gauntlets',['strength','mobility']],
+ ["Gyrfalcon's Hauberk",'hunter','chest',['recovery','mobility']],
+ ['Star-Eater Scales','hunter','legs',['intellect','mobility']],
+ ['Crown of Tempests','warlock','helmet',['intellect','recovery']],
+ ['Sunbracers','warlock','gauntlets',['strength','recovery']],
+ ['Phoenix Protocol','warlock','chest',['intellect','recovery']],
+ ['Transversive Steps','warlock','legs',['mobility','discipline']]
+];
+function genStats(spikes){
+ const s={}; STATS.forEach(k=>s[k]=2+ri(9));
+ spikes.forEach(k=>s[k]+=12+ri(11));
+ return s;
 }
-
-function gamutBadge(t){
-  const cls=gamutCls(t);
-  return `<div class="cgamut ${cls}"><span class="cgamut-dot"></span>${t.colorGamut}</div>`;
-}
-
-function bestIdx(vals, dir) {
-  const ns = vals.map((v,i)=>({v,i})).filter(x=>x.v!=null&&!isNaN(x.v));
-  if(ns.length<2) return [];
-  const tgt = dir===1 ? Math.max(...ns.map(x=>x.v)) : Math.min(...ns.map(x=>x.v));
-  const w = ns.filter(x=>x.v===tgt);
-  if(w.length===ns.length) return [];
-  return w.map(x=>x.i);
-}
-
-function hp(h){ return `<span class="hpill">${h}</span>`; }
-function sp(s){ return `<span class="spill">${s}"</span>`; }
-
-function panelBadge(t){
-  if(t.panel==='SQD Mini-LED') return `<span class="bdg bdg-sqd">SQD</span>`;
-  if(t.panel==='RGB Mini-LED') return `<span class="bdg bdg-rgb">RGB</span>`;
-  if(t.panel==='QD-Mini LED')  return `<span class="bdg bdg-mini">QD Mini-LED</span>`;
-  return `<span class="bdg bdg-mini" style="opacity:.7">Mini-LED</span>`;
-}
-
-function cardBadges(t){
-  const b=[];
-  b.push(t.year===2026
-    ? `<span class="bdg bdg-26">2026</span>`
-    : `<span class="bdg bdg-25">2025</span>`);
-  b.push(panelBadge(t));
-  if(t.resolution==='8K') b.push(`<span class="bdg bdg-8k">8K</span>`);
-  if(t.gaming)            b.push(`<span class="bdg bdg-game">Gaming</span>`);
-  if(t.audioBrand==='Bang & Olufsen') b.push(`<span class="bdg bdg-bo">B&O Audio</span>`);
-  return b.join('');
-}
-
-// ─── FILTER / SORT ───────────────────────────────────────────────────────────
-function filtered(){
-  return TVS.filter(t=>{
-    if(S.f.size   && !t.sizes.includes(+S.f.size))   return false;
-    if(S.f.panel  && t.panel!==S.f.panel)            return false;
-    if(S.f.hz     && t.hz!==+S.f.hz)                 return false;
-    if(S.f.year   && t.year!==+S.f.year)             return false;
-    if(S.f.gaming && !t.gaming)                      return false;
-    return true;
+function genDemo(){
+ const items=[];
+ const owners=['c_titan','c_hunter','c_warlock','vault','vault'];
+ WEAPON_DEFS.forEach(def=>{
+  const name=def[0],type=def[1],slot=def[2],element=def[3],tier=def[4],champ=def[5];
+  items.push({id:uid(),name:name,itemType:'weapon',type:type,slot:slot,element:element,tier:tier,champ:champ,power:1990+ri(21),
+   perks:[pick(PERKS),pick(PERKS)],mw:pick(MWS),owner:pick(owners),equipped:false,locked:tier==='Exotic',tag:null,notes:''});
+ });
+ CHARS.forEach(c=>{
+  const cfg=ARMOR_SETS[c.cls];
+  ARMOR_SLOTS.forEach(slot=>{
+   for(let n=0;n<3;n++){
+    const set=cfg.sets[(n+ri(2))%cfg.sets.length];
+    items.push({id:uid(),name:set+' '+cfg.suffix[slot],itemType:'armor',type:SLOT_LABEL[slot],slot:slot,tier:'Legendary',
+     classType:c.cls,power:1990+ri(21),stats:slot==='classitem'?null:genStats([pick(STATS),pick(STATS)]),
+     owner:n===0?c.id:(n===1?pick([c.id,'vault']):'vault'),equipped:false,locked:false,tag:null,notes:''});
+   }
   });
-}
-
-function sorted(list){
-  const [k,d]=S.sort.split('-');
-  return [...list].sort((a,b)=>{
-    if(k==='model') return d==='asc'?a.model.localeCompare(b.model):b.model.localeCompare(a.model);
-    let av,bv;
-    if(k==='year') {av=a.year;bv=b.year;}
-    if(k==='nits') {av=a.nits;bv=b.nits;}
-    if(k==='zones'){av=a.zones;bv=b.zones;}
-    return d==='asc'?av-bv:bv-av;
+ });
+ EXOTIC_ARMOR.forEach(def=>{
+  const name=def[0],cls=def[1],slot=def[2],spikes=def[3];
+  items.push({id:uid(),name:name,itemType:'armor',type:SLOT_LABEL[slot],slot:slot,tier:'Exotic',classType:cls,
+   power:1995+ri(16),stats:genStats(spikes),owner:pick(['c_'+cls,'vault']),
+   equipped:false,locked:true,tag:null,notes:''});
+ });
+ // guarantee every character can equip every slot
+ CHARS.forEach(c=>{
+  SLOTS.forEach(slot=>{
+   const mine=items.filter(i=>i.slot===slot&&i.owner===c.id&&(i.itemType==='weapon'||i.classType===c.cls));
+   if(!mine.length){
+    const cand=items.find(i=>i.slot===slot&&i.owner==='vault'&&(i.itemType==='weapon'||i.classType===c.cls));
+    if(cand){cand.owner=c.id;mine.push(cand);}
+   }
+   // prefer non-exotics for starting gear so the one-exotic rule holds
+   if(mine.length){mine.sort((a,b)=>((a.tier==='Exotic')-(b.tier==='Exotic'))||b.power-a.power);mine[0].equipped=true;}
   });
+ });
+ // a few starter tags
+ items.filter(i=>i.tier==='Exotic').slice(0,4).forEach(i=>i.tag='favorite');
+ return items;
 }
 
-// ─── RENDER CARDS ────────────────────────────────────────────────────────────
-function renderCards(){
-  const list=sorted(filtered());
-  const g=$('grid');
-  $('rcount').textContent=`Showing ${list.length} of ${TVS.length} model${list.length!==1?'s':''}`;
-  if(!list.length){
-    g.innerHTML=`<div class="nores"><p style="font-size:1.05rem;font-weight:700;margin-bottom:.4rem">No models match your filters</p><p style="font-size:.78rem;margin-bottom:.6rem">Try broadening your search</p><button class="clr-btn" onclick="clearF()" style="padding:.3rem .8rem">Clear all filters</button></div>`;
-    return;
+/* ============================== state ============================== */
+const LS='vaultCommand.v1';
+let state;
+function save(){
+ localStorage.setItem(LS,JSON.stringify({items:state.items,loadouts:state.loadouts,settings:state.settings,activeChar:state.activeChar}));
+}
+function initState(){
+ state={items:[],loadouts:[],settings:{sort:'power',autoApply:false},activeChar:'c_titan',view:'inventory',q:'',
+  selectedActivity:null,optWeights:{mobility:0,resilience:3,recovery:2,discipline:1,intellect:0,strength:0},
+  optExotic:'',optResult:null,orgSel:new Set(),orgSort:{key:'power',dir:-1}};
+ let saved=null;
+ try{saved=JSON.parse(localStorage.getItem(LS));}catch(e){}
+ if(saved&&Array.isArray(saved.items)&&saved.items.length){
+  state.items=saved.items; state.loadouts=saved.loadouts||[];
+  Object.assign(state.settings,saved.settings||{});
+  state.activeChar=saved.activeChar||'c_titan';
+ }else{
+  state.items=genDemo(); save();
+ }
+}
+const item=id=>state.items.find(i=>i.id===id);
+const getChar=id=>CHARS.find(c=>c.id===id);
+const cap=s=>s?s.charAt(0).toUpperCase()+s.slice(1):'';
+const esc=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+/* ============================== search language ============================== */
+function tokenPred(t){
+ const m=t.match(/^([a-z]+):(.+)$/);
+ if(!m){
+  return i=>((i.name+' '+i.type+' '+(i.perks||[]).join(' ')+' '+(i.notes||'')).toLowerCase().includes(t));
+ }
+ const k=m[1],v=m[2];
+ switch(k){
+  case 'is':
+   switch(v){
+    case 'weapon':return i=>i.itemType==='weapon';
+    case 'armor':return i=>i.itemType==='armor';
+    case 'exotic':return i=>i.tier==='Exotic';
+    case 'legendary':return i=>i.tier==='Legendary';
+    case 'rare':return i=>i.tier==='Rare';
+    case 'locked':return i=>!!i.locked;
+    case 'equipped':return i=>!!i.equipped;
+    case 'tagged':return i=>!!i.tag;
+    default:return function(){return false;};
+   }
+  case 'slot':return i=>i.slot===v;
+  case 'type':return i=>i.type.toLowerCase().replace(/\s+/g,'')===v.replace(/\s+/g,'');
+  case 'element':return i=>i.element===v;
+  case 'class':return i=>i.classType===v;
+  case 'tag':return v==='none'?(i=>!i.tag):(i=>i.tag===v);
+  case 'perk':return i=>(i.perks||[]).join(' ').toLowerCase().includes(v);
+  case 'name':return i=>i.name.toLowerCase().includes(v);
+  case 'owner':{
+   const map={vault:'vault',titan:'c_titan',hunter:'c_hunter',warlock:'c_warlock'};
+   return i=>i.owner===(map[v]||v);
   }
-  const maxed=S.sel.length>=4;
-  g.innerHTML=list.map(t=>{
-    const on=S.sel.includes(t.id);
-    const dis=!on&&maxed;
-    const zonesStr=t.zones.toLocaleString();
-    return`<div class="card${on?' sel':''}" role="listitem">
-      <div class="chead">
-        <div><div class="cmodel">${t.model}</div><div class="csub">${t.series} &middot; ${t.year}</div></div>
-      </div>
-      <div class="bdg-row">${cardBadges(t)}</div>
-      ${gamutBadge(t)}
-      <div class="sg">
-        <div class="si"><span class="sk">Resolution</span><span class="sv${t.resolution==='8K'?' gold':''}">${t.resolution} UHD</span></div>
-        <div class="si"><span class="sk">Refresh Rate</span><span class="sv${t.hz>=144?' hi':''}">${t.hz}Hz</span></div>
-        <div class="si"><span class="sk">Peak Brightness</span><span class="sv gold">${t.nits.toLocaleString()} nits</span></div>
-        <div class="si"><span class="sk">Dimming Zones</span><span class="sv">${zonesStr}</span></div>
-        <div class="si"><span class="sk">HDMI</span><span class="sv">${t.hdmiPorts}&times; HDMI ${t.hdmiVer}</span></div>
-        <div class="si"><span class="sk">Audio</span><span class="sv">${t.audioW}W ${t.audioSys}</span></div>
-      </div>
-      <div><div class="slabel">HDR Support</div><div class="pills">${t.hdr.map(hp).join('')}</div></div>
-      <div><div class="slabel">Available Sizes</div><div class="pills">${t.sizes.map(sp).join('')}</div></div>
-      <button class="cbtn${on?' on':''}" data-cid="${t.id}" ${dis?'disabled':''} aria-pressed="${on}">
-        ${on?'✓ In comparison':dis?'Max 4 selected':'+ Add to compare'}
-      </button>
-    </div>`;
-  }).join('');
+  case 'power':{
+   const pm=v.match(/^(>=|<=|>|<|=)?(\d+)$/);
+   if(!pm)return function(){return false;};
+   const op=pm[1]||'=',n=+pm[2];
+   return i=>op==='>'?i.power>n:op==='<'?i.power<n:op==='>='?i.power>=n:op==='<='?i.power<=n:i.power===n;
+  }
+  default:return i=>((i.name+' '+i.type).toLowerCase().includes(t));
+ }
+}
+function makeFilter(q){
+ const preds=q.toLowerCase().split(/\s+/).filter(Boolean).map(t=>{
+  let neg=false; if(t.startsWith('-')){neg=true;t=t.slice(1);}
+  if(!t)return function(){return true;};
+  const p=tokenPred(t);
+  return neg?(i=>!p(i)):p;
+ });
+ if(!preds.length)return null;
+ return i=>preds.every(p=>p(i));
 }
 
-// ─── TRAY ────────────────────────────────────────────────────────────────────
-function renderTray(){
-  const tray=$('tray');
-  if(S.sel.length<2){tray.classList.remove('vis');return;}
-  tray.classList.add('vis');
-  $('tchips').innerHTML=S.sel.map(id=>{
-    const t=byId(id);
-    return`<div class="tchip">${t.model}<button class="tx" data-rid="${id}" aria-label="Remove ${t.model}">×</button></div>`;
-  }).join('');
+/* ============================== core actions ============================== */
+function bestReplacement(it){
+ return state.items.filter(r=>r.owner===it.owner&&r.slot===it.slot&&!r.equipped&&r.id!==it.id
+   &&(r.itemType==='weapon'||r.classType===getChar(it.owner).cls))
+  .sort((a,b)=>b.power-a.power)[0]||null;
 }
-
-// ─── COMPARISON TABLE ────────────────────────────────────────────────────────
-function renderComp(){
-  const sec=$('csec');
-  if(S.sel.length<2){sec.style.display='none';return;}
-  sec.style.display='block';
-  const tvs=S.sel.map(id=>byId(id));
-  const N=tvs.length;
-  const cols=`148px repeat(${N},1fr)`;
-
-  let h=`<div class="crow-hdr" style="grid-template-columns:${cols}">
-    <div class="chdr-cell">Specification</div>
-    ${tvs.map(t=>`<div class="chdr-cell">
-      <div><div class="chdr-model">${t.model}</div><div class="chdr-sub">${t.series} &middot; ${t.year}</div></div>
-      <button class="crmv" data-rid="${t.id}" aria-label="Remove ${t.model}">✕</button>
-    </div>`).join('')}
-  </div>`;
-
-  ROWS.forEach(row=>{
-    const cells=tvs.map(t=>row.get(t));
-    const bests=row.best!==null ? bestIdx(cells.map(c=>c.num),row.best) : [];
-    const chtml=cells.map((c,i)=>{
-      const b=bests.includes(i);
-      let inner;
-      if(c.pills)  inner=`<div class="cv cv-pills">${c.pills.map(hp).join('')}</div>`;
-      else if(c.sizes) inner=`<div class="cv cv-pills">${c.sizes.map(sp).join('')}</div>`;
-      else inner=`<span class="cv">${c.txt}</span>`;
-      return`<div class="ccell${b?' best':''}">
-        ${b?'<span class="best-tag">Best</span>':''}
-        ${inner}
-      </div>`;
-    }).join('');
-    h+=`<div class="crow" style="grid-template-columns:${cols}">
-      <div class="clbl">${row.lbl}</div>${chtml}
-    </div>`;
+function moveItem(it,dest){
+ if(typeof it==='string')it=item(it);
+ if(!it||it.owner===dest)return true;
+ if(dest!=='vault'){
+  const c=getChar(dest);
+  if(it.itemType==='armor'&&it.classType!==c.cls){toast(it.name+' can only be used by a '+cap(it.classType));return false;}
+ }
+ if(it.equipped){
+  const rep=bestReplacement(it);
+  if(!rep){toast('Cannot move '+it.name+' — nothing else to equip in that slot');return false;}
+  it.equipped=false; rep.equipped=true;
+ }
+ it.owner=dest;
+ return true;
+}
+function equipItem(it,charId){
+ if(typeof it==='string')it=item(it);
+ if(!it)return false;
+ const c=getChar(charId);
+ if(it.itemType==='armor'&&it.classType!==c.cls){toast(it.name+' is '+cap(it.classType)+'-only');return false;}
+ if(it.owner!==charId&&!moveItem(it,charId))return false;
+ state.items.forEach(o=>{if(o.owner===charId&&o.slot===it.slot&&o.equipped)o.equipped=false;});
+ if(it.tier==='Exotic'){
+  state.items.forEach(o=>{
+   if(o.owner===charId&&o.equipped&&o.tier==='Exotic'&&o.itemType===it.itemType&&o.slot!==it.slot){
+    o.equipped=false;
+    const rep=state.items.filter(r=>r.owner===charId&&r.slot===o.slot&&!r.equipped&&r.tier!=='Exotic'&&r.id!==it.id)
+      .sort((a,b)=>b.power-a.power)[0];
+    if(rep)rep.equipped=true;
+   }
   });
-
-  $('ctable').innerHTML=h;
+ }
+ it.equipped=true;
+ return true;
+}
+function applyLoadout(itemIds,charId,name){
+ const c=getChar(charId);
+ const list=itemIds.map(id=>item(id)).filter(Boolean)
+  .filter(i=>i.itemType==='weapon'||i.classType===c.cls);
+ list.forEach(i=>{if(i.owner!==charId)moveItem(i,charId);});
+ list.forEach(i=>{if(i.owner===charId)equipItem(i,charId);});
+ save();renderAll();
+ toast('⚡ Equipped “'+name+'” on '+c.name);
+}
+function maxPower(charId){
+ const c=getChar(charId);let t=0;
+ SLOTS.forEach(s=>{
+  const cand=state.items.filter(i=>i.slot===s&&(i.itemType==='weapon'||i.classType===c.cls));
+  if(cand.length)t+=Math.max.apply(null,cand.map(i=>i.power));
+ });
+ return (t/8).toFixed(1);
+}
+function sortItems(arr){
+ const s=state.settings.sort;
+ return arr.slice().sort((a,b)=>{
+  if(s==='name')return a.name.localeCompare(b.name);
+  if(s==='tier'){const o={Exotic:0,Legendary:1,Rare:2};return(o[a.tier]-o[b.tier])||b.power-a.power;}
+  return b.power-a.power;
+ });
 }
 
-// ─── RENDER ALL ──────────────────────────────────────────────────────────────
-function render(){ renderCards(); renderTray(); renderComp(); }
-
-function toggleSel(id){
-  const i=S.sel.indexOf(id);
-  if(i!==-1) S.sel.splice(i,1);
-  else if(S.sel.length<4) S.sel.push(id);
-  render();
+/* ============================== recommendation engine ============================== */
+function scoreWeapon(w,act){
+ let s=(w.power-1985)*1.5; const why=[];
+ if(act.surges&&act.surges.indexOf(w.element)>=0){s+=30;why.push(cap(w.element)+' surge active (+25% dmg)');}
+ if(act.champions&&act.champions.length){
+  for(let x=0;x<act.champions.length;x++){
+   const ch=act.champions[x];
+   if(w.champ===ch){s+=45;why.push('Intrinsically stuns '+cap(ch)+' Champions');break;}
+   if(CHAMPION_COUNTERS[ch].indexOf(w.type)>=0){s+=35;why.push('Counters '+cap(ch)+' Champions (seasonal mod)');break;}
+  }
+ }
+ const role=act.roles&&act.roles[w.slot];
+ if(role&&ROLES[role].types.indexOf(w.type)>=0){s+=25;why.push(ROLES[role].label);}
+ if(w.tier==='Exotic')s+=10;
+ if(w.tag==='favorite'){s+=15;why.push('Tagged ★ favorite');}
+ if(w.tag==='junk')s-=200;
+ if(w.tag==='archive')s-=100;
+ return{s:s,why:why};
 }
-
-// ─── FILTER GROUPS ───────────────────────────────────────────────────────────
-function setupFG(gid,key){
-  $(gid).addEventListener('click',e=>{
-    const b=e.target.closest('.fb');
-    if(!b) return;
-    $(gid).querySelectorAll('.fb').forEach(x=>x.classList.remove('on'));
-    b.classList.add('on');
-    S.f[key]=b.dataset.v;
-    render();
+function armorScore(a,weights){
+ let s=(a.power-1985)*0.6;
+ if(a.stats)STATS.forEach(k=>s+=(a.stats[k]||0)*(weights[k]||0));
+ if(a.tag==='favorite')s+=5;
+ if(a.tag==='junk')s-=200;
+ return s;
+}
+function optimizeArmor(cls,weights,requiredExoticId){
+ const bySlot={};
+ ARMOR_SLOTS.forEach(sl=>{
+  bySlot[sl]=state.items.filter(i=>i.slot===sl&&i.classType===cls&&i.tag!=='junk')
+   .map(i=>({i:i,sc:armorScore(i,weights)})).sort((a,b)=>b.sc-a.sc);
+ });
+ if(ARMOR_SLOTS.some(sl=>!bySlot[sl].length))return null;
+ const bestLeg={},bestExo={};
+ ARMOR_SLOTS.forEach(sl=>{
+  bestLeg[sl]=bySlot[sl].find(x=>x.i.tier!=='Exotic')||null;
+  bestExo[sl]=bySlot[sl].find(x=>x.i.tier==='Exotic')||null;
+ });
+ const combos=[];
+ const req=requiredExoticId?item(requiredExoticId):null;
+ if(req){
+  if(ARMOR_SLOTS.every(sl=>sl===req.slot||bestLeg[sl])){
+   combos.push(ARMOR_SLOTS.map(sl=>sl===req.slot?{i:req,sc:armorScore(req,weights)}:bestLeg[sl]));
+  }
+ }else{
+  if(ARMOR_SLOTS.every(sl=>bestLeg[sl]))combos.push(ARMOR_SLOTS.map(sl=>bestLeg[sl]));
+  ARMOR_SLOTS.forEach(exSl=>{
+   if(bestExo[exSl]&&ARMOR_SLOTS.every(sl=>sl===exSl||bestLeg[sl]))
+    combos.push(ARMOR_SLOTS.map(sl=>sl===exSl?bestExo[exSl]:bestLeg[sl]));
   });
+ }
+ if(!combos.length)return null;
+ let best=combos[0],bestSum=-1e9;
+ combos.forEach(c=>{const sum=c.reduce((t,x)=>t+x.sc,0);if(sum>bestSum){bestSum=sum;best=c;}});
+ const totals={};STATS.forEach(k=>totals[k]=0);
+ best.forEach(x=>{if(x.i.stats)STATS.forEach(k=>totals[k]+=x.i.stats[k]||0);});
+ return{pieces:best.map(x=>x.i),totals:totals,score:bestSum};
+}
+function recommendLoadout(actId,charId){
+ const act=ACTIVITIES.find(a=>a.id===actId);
+ const c=getChar(charId);
+ let weaponPicks=[];
+ WEAPON_SLOTS.forEach(sl=>{
+  const cands=state.items.filter(i=>i.itemType==='weapon'&&i.slot===sl);
+  if(!cands.length)return;
+  const scored=cands.map(w=>{const r=scoreWeapon(w,act);return{w:w,s:r.s,why:r.why};}).sort((a,b)=>b.s-a.s);
+  weaponPicks.push(scored[0]);
+ });
+ // enforce one exotic weapon: keep the highest-scored exotic, swap the rest
+ const exos=weaponPicks.filter(p=>p.w.tier==='Exotic').sort((a,b)=>b.s-a.s);
+ for(let n=1;n<exos.length;n++){
+  const p=exos[n];
+  const alt=state.items.filter(i=>i.itemType==='weapon'&&i.slot===p.w.slot&&i.tier!=='Exotic')
+   .map(w=>{const r=scoreWeapon(w,act);return{w:w,s:r.s,why:r.why};}).sort((a,b)=>b.s-a.s)[0];
+  if(alt){const idx=weaponPicks.indexOf(p);weaponPicks[idx]=alt;alt.why.push('Swapped in (one exotic weapon max)');}
+ }
+ const armor=optimizeArmor(c.cls,act.statW,null);
+ const armorPicks=armor?armor.pieces.map(a=>{
+  const why=[];
+  if(a.stats){
+   const top=STATS.filter(k=>act.statW[k]>0).sort((x,y)=>(a.stats[y]||0)-(a.stats[x]||0)).slice(0,2)
+    .map(k=>STAT_LABEL[k]+' '+a.stats[k]);
+   if(top.length)why.push(top.join(' · '));
+  }
+  if(a.tier==='Exotic')why.push('Best-in-slot exotic for this stat spread');
+  return{w:a,why:why};
+ }):[];
+ const ids=weaponPicks.map(p=>p.w.id).concat(armorPicks.map(p=>p.w.id));
+ return{act:act,char:c,weaponPicks:weaponPicks,armorPicks:armorPicks,totals:armor?armor.totals:null,ids:ids};
 }
 
-function clearF(){
-  S.f={size:'',panel:'',hz:'',year:'',gaming:''};
-  document.querySelectorAll('.fb').forEach(b=>b.classList.toggle('on',b.dataset.v===''));
-  render();
+/* ============================== rendering ============================== */
+function tileHTML(it,big,flt){
+ const dim=flt&&!flt(it)?' dimmed':'';
+ const icon=TYPE_ICON[it.itemType==='weapon'?it.type:it.slot]||'❓';
+ const el=it.element?'<span class="el" style="background:'+EL_COLOR[it.element]+'"></span>':'';
+ const tag=it.tag?'<span class="tg">'+TAG_ICON[it.tag]+'</span>':'';
+ const lk=it.locked?'<span class="lk">🔒</span>':'';
+ const cls=it.itemType==='armor'?'<span class="cls">'+it.classType.charAt(0).toUpperCase()+'</span>':'';
+ const title=it.name+' — '+it.tier+' '+it.type+' ('+it.power+')'+(it.perks?' · '+it.perks.join(', '):'');
+ return '<div class="item t-'+it.tier+(big?' big':'')+(it.equipped?' equipped':'')+dim+'" draggable="true" data-id="'+it.id+'" title="'+esc(title)+'">'
+  +icon+'<span class="pow">'+it.power+'</span>'+el+tag+lk+cls+'</div>';
+}
+function invRow(charId,slot,flt){
+ const c=getChar(charId);
+ const mine=state.items.filter(i=>i.owner===charId&&i.slot===slot&&(i.itemType==='weapon'||i.classType===c.cls));
+ const eq=mine.find(i=>i.equipped);
+ const rest=sortItems(mine.filter(i=>!i.equipped));
+ return '<div class="row"><div class="rowlabel">'+SLOT_LABEL[slot]+'</div>'
+  +'<div class="eqslot">'+(eq?tileHTML(eq,true,flt):'<div class="emptyslot">empty</div>')+'</div>'
+  +'<div class="grid">'+rest.map(i=>tileHTML(i,false,flt)).join('')+'</div></div>';
+}
+function renderInventory(){
+ const flt=makeFilter(state.q);
+ const cid=state.activeChar;
+ let h='<div class="banner">💡 <b>Demo inventory.</b> Click an item for details, tags &amp; notes. Double-click to equip. Drag items onto the vault, this screen, or a character tab up top to transfer. Try the search bar with DIM-style queries like <b>is:exotic slot:power</b> or <b>power:&gt;2000 -tag:junk</b>.</div>';
+ h+='<div class="dropzone" data-drop="'+cid+'"><h2>'+getChar(cid).name+' — Weapons</h2>';
+ WEAPON_SLOTS.forEach(s=>h+=invRow(cid,s,flt));
+ h+='<h2>'+getChar(cid).name+' — Armor</h2>';
+ ARMOR_SLOTS.forEach(s=>h+=invRow(cid,s,flt));
+ h+='</div>';
+ const vault=state.items.filter(i=>i.owner==='vault');
+ h+='<div class="dropzone" data-drop="vault"><h2>Vault ('+vault.length+' items)</h2>';
+ SLOTS.forEach(s=>{
+  const its=sortItems(vault.filter(i=>i.slot===s));
+  if(!its.length)return;
+  h+='<div class="row"><div class="rowlabel">'+SLOT_LABEL[s]+'</div><div class="grid">'+its.map(i=>tileHTML(i,false,flt)).join('')+'</div></div>';
+ });
+ h+='</div>';
+ return h;
+}
+function loadoutCard(l){
+ const its=l.items.map(id=>item(id)).filter(Boolean);
+ return '<div class="card"><h4>'+esc(l.name)+'</h4><div class="cat">'+cap(l.classType)+' · '+its.length+' items</div>'
+  +'<div class="grid" style="margin-top:8px">'+its.map(i=>tileHTML(i,false,null)).join('')+'</div>'
+  +'<div class="actions"><button class="btn sm primary" data-act="applyLoadout" data-id="'+l.id+'">Equip</button>'
+  +'<button class="btn sm" data-act="editLoadout" data-id="'+l.id+'">Edit</button>'
+  +'<button class="btn sm danger" data-act="delLoadout" data-id="'+l.id+'">Delete</button></div></div>';
+}
+function renderLoadouts(){
+ let h='<div class="flex spread" style="margin-top:16px"><h2 style="margin:0;border:0">Loadouts</h2>'
+  +'<div class="flex"><button class="btn" data-act="saveEquipped">＋ Save current equipment</button>'
+  +'<button class="btn primary" data-act="newLoadout">＋ New loadout</button></div></div>';
+ if(!state.loadouts.length)h+='<div class="banner">No loadouts yet. Save your current equipment, build one by hand, or generate one from the <b>Missions</b> tab.</div>';
+ h+='<div class="cards" style="margin-top:12px">'+state.loadouts.map(loadoutCard).join('')+'</div>';
+ return h;
+}
+function statBars(totals,weights){
+ return STATS.map(k=>{
+  const v=totals[k]||0;
+  return '<div class="statrow"><span class="sn">'+STAT_LABEL[k]+(weights&&weights[k]?' ×'+weights[k]:'')+'</span>'
+   +'<span class="bar"><i style="width:'+Math.min(100,v)+'%"></i></span><span class="sv">'+v+'</span></div>';
+ }).join('');
+}
+function tierBoxes(totals){
+ return '<div class="tiers">'+STATS.map(k=>'<div class="tierbox"><b>T'+Math.min(10,Math.floor((totals[k]||0)/10))+'</b>'+STAT_LABEL[k].slice(0,3)+'</div>').join('')+'</div>';
+}
+function renderOptimizer(){
+ const c=getChar(state.activeChar);
+ const exotics=state.items.filter(i=>i.itemType==='armor'&&i.tier==='Exotic'&&i.classType===c.cls);
+ let h='<h2>Loadout Optimizer — '+c.name+'</h2>'
+  +'<div class="banner">Pick an exotic (or let the optimizer choose) and weight the stats you care about. It searches every owned armor combination for this class — vault included — and respects the one-exotic rule.</div>'
+  +'<div class="card" style="max-width:520px">'
+  +'<div class="field"><label>Exotic armor</label><select data-chg="optExotic"><option value="">— Optimizer chooses —</option>'
+  +exotics.map(e=>'<option value="'+e.id+'"'+(state.optExotic===e.id?' selected':'')+'>'+esc(e.name)+' ('+SLOT_LABEL[e.slot]+')</option>').join('')
+  +'</select></div>'
+  +STATS.map(k=>'<div class="field"><label>'+STAT_LABEL[k]+' priority</label><select data-chg="optW" data-stat="'+k+'">'
+   +[0,1,2,3].map(n=>'<option value="'+n+'"'+(state.optWeights[k]===n?' selected':'')+'>'+['Ignore','Low','Medium','High'][n]+'</option>').join('')+'</select></div>').join('')
+  +'<div class="actions"><button class="btn primary" data-act="optimize">⚙ Optimize</button></div></div>';
+ if(state.optResult){
+  const r=state.optResult;
+  h+='<h2>Best build found</h2><div class="card"><div class="recblock">'
+   +r.pieces.map(p=>'<div class="recpick">'+tileHTML(p,true,null)+'<div class="nm">'+esc(p.name)+'</div></div>').join('')
+   +'</div>'+tierBoxes(r.totals)+statBars(r.totals,state.optWeights)
+   +'<div class="actions"><button class="btn primary" data-act="applyOpt">Equip on '+c.name+'</button>'
+   +'<button class="btn" data-act="saveOpt">Save as loadout</button></div></div>';
+ }
+ return h;
+}
+function renderMissions(){
+ const c=getChar(state.activeChar);
+ let h='<h2>Mission Control</h2>'
+  +'<div class="banner">🎮 <b>Select a mission and Vault Command builds the best-fit loadout automatically</b> — matching elemental surges, champion counters, activity roles and the ideal stat spread from everything you own. Turn on auto-equip and selecting a mission instantly changes your equipped gear.</div>'
+  +'<label class="opt"><input type="checkbox" data-chg="autoApply"'+(state.settings.autoApply?' checked':'')+'> <b>Auto-equip on mission select</b> <span class="muted">(applies to '+c.name+' the moment you pick an activity)</span></label>'
+  +'<div class="cards" style="margin-top:12px">';
+ ACTIVITIES.forEach(a=>{
+  h+='<div class="card'+(state.selectedActivity===a.id?' sel':'')+'" data-act="selectAct" data-id="'+a.id+'" style="cursor:pointer">'
+   +'<h4>'+a.icon+' '+a.name+'</h4><div class="cat">'+a.cat+'</div><p>'+a.desc+'</p><div class="chips">'
+   +(a.surges||[]).map(s=>'<span class="chip surge">'+cap(s)+' surge</span>').join('')
+   +(a.champions||[]).map(ch=>'<span class="chip champ">'+cap(ch)+'</span>').join('')
+   +'<span class="chip">'+a.focus+'</span></div></div>';
+ });
+ h+='</div>';
+ if(state.selectedActivity){
+  const rec=recommendLoadout(state.selectedActivity,state.activeChar);
+  const pickHTML=p=>'<div class="recpick">'+tileHTML(p.w,true,null)+'<div class="nm">'+esc(p.w.name)+'</div>'
+   +p.why.map(w=>'<div class="why">✓ '+esc(w)+'</div>').join('')+'</div>';
+  h+='<h2>'+rec.act.icon+' Recommended loadout · '+rec.act.name+' · '+rec.char.name+'</h2>'
+   +'<div class="card"><h3>Weapons</h3><div class="recblock">'+rec.weaponPicks.map(pickHTML).join('')+'</div>'
+   +'<h3>Armor</h3><div class="recblock">'+rec.armorPicks.map(pickHTML).join('')+'</div>'
+   +(rec.totals?tierBoxes(rec.totals)+statBars(rec.totals,rec.act.statW):'')
+   +'<div class="actions"><button class="btn primary" data-act="applyRec">⚡ Equip this loadout</button>'
+   +'<button class="btn" data-act="saveRec">Save as loadout</button></div>'
+   +'<p class="muted" style="margin-top:10px">With a linked Bungie account this equips on your real characters in-game (from orbit or social spaces — Destiny blocks most equipment changes mid-activity).</p></div>';
+ }
+ return h;
+}
+function renderOrganizer(){
+ const flt=makeFilter(state.q);
+ let its=state.items.filter(i=>!flt||flt(i));
+ const key=state.orgSort.key,dir=state.orgSort.dir;
+ its=its.slice().sort((a,b)=>{
+  let va=a[key],vb=b[key];
+  if(key==='owner'){va=a.owner==='vault'?'Vault':getChar(a.owner).name;vb=b.owner==='vault'?'Vault':getChar(b.owner).name;}
+  if(typeof va==='string'||typeof vb==='string')return dir*String(va||'').localeCompare(String(vb||''));
+  return dir*((va||0)-(vb||0));
+ });
+ const selN=state.orgSel.size;
+ let h='<h2>Organizer — '+its.length+' items</h2>'
+  +'<div class="bulkbar"><span>'+(selN?selN+' selected:':'Select items for bulk actions')+'</span>'
+  +(selN?['favorite','keep','infuse','junk','archive'].map(t=>'<button class="btn sm" data-act="bulkTag" data-v="'+t+'">'+TAG_ICON[t]+' '+cap(t)+'</button>').join('')
+   +'<button class="btn sm" data-act="bulkTag" data-v="">Clear tag</button>'
+   +'<button class="btn sm" data-act="bulkLock">🔒 Lock/Unlock</button>'
+   +'<button class="btn sm" data-act="bulkVault">📦 To vault</button>'
+   +'<button class="btn sm" data-act="bulkClear">✕ Deselect</button>':'')
+  +'</div><div class="tablewrap"><table><thead><tr><th></th>'
+  +[['name','Name'],['tier','Tier'],['type','Type'],['element','Element'],['power','Power'],['owner','Owner'],['tag','Tag'],['locked','🔒'],['notes','Notes']]
+   .map(kl=>'<th data-act="sortOrg" data-key="'+kl[0]+'">'+kl[1]+(key===kl[0]?(dir>0?' ▲':' ▼'):'')+'</th>').join('')
+  +'</tr></thead><tbody>';
+ its.forEach(i=>{
+  h+='<tr><td><input type="checkbox" data-chg="orgSel" data-id="'+i.id+'"'+(state.orgSel.has(i.id)?' checked':'')+'></td>'
+   +'<td><a href="#" data-act="openItem" data-id="'+i.id+'" style="color:'+(i.tier==='Exotic'?'var(--exotic)':i.tier==='Legendary'?'#c79ce0':'var(--txt)')+'">'+esc(i.name)+'</a></td>'
+   +'<td>'+i.tier+'</td><td>'+i.type+'</td><td>'+(i.element?cap(i.element):'—')+'</td><td>'+i.power+'</td>'
+   +'<td>'+(i.owner==='vault'?'Vault':getChar(i.owner).name)+(i.equipped?' ⚡':'')+'</td>'
+   +'<td>'+(i.tag?TAG_ICON[i.tag]+' '+cap(i.tag):'—')+'</td><td>'+(i.locked?'🔒':'')+'</td>'
+   +'<td class="muted">'+esc(i.notes||'')+'</td></tr>';
+ });
+ h+='</tbody></table></div>';
+ return h;
+}
+function renderChars(){
+ document.getElementById('charTabs').innerHTML=CHARS.map(c=>
+  '<button class="ctab dropzone'+(state.activeChar===c.id?' active':'')+'" data-act="char" data-id="'+c.id+'" data-drop="'+c.id+'">'
+  +'<span class="em">'+c.em+'</span><span class="nm">'+c.name+'<br><span class="pw">✦ '+maxPower(c.id)+'</span></span></button>').join('');
+}
+function renderNav(){
+ const tabs=[['inventory','Inventory'],['missions','🎮 Missions'],['loadouts','Loadouts'],['optimizer','Optimizer'],['organizer','Organizer']];
+ document.getElementById('navTabs').innerHTML=tabs.map(t=>
+  '<button class="tab'+(state.view===t[0]?' active':'')+'" data-act="view" data-v="'+t[0]+'">'+t[1]+'</button>').join('');
+}
+function renderView(){
+ const map={inventory:renderInventory,loadouts:renderLoadouts,optimizer:renderOptimizer,missions:renderMissions,organizer:renderOrganizer};
+ document.getElementById('view').innerHTML=map[state.view]();
+ const flt=makeFilter(state.q);
+ document.getElementById('matchCount').textContent=flt?state.items.filter(flt).length+' match':'';
+}
+function renderAll(){renderChars();renderNav();renderView();}
+
+/* ============================== modals ============================== */
+const overlay=document.getElementById('overlay');
+function openModal(html){overlay.innerHTML=html;overlay.classList.add('show');}
+function closeModal(){overlay.classList.remove('show');overlay.innerHTML='';}
+function openItem(id){
+ const it=item(id);if(!it)return;
+ const owner=it.owner==='vault'?'Vault':getChar(it.owner).name;
+ let body='';
+ if(it.itemType==='weapon'){
+  body='<div style="margin:8px 0">'+(it.perks||[]).map(p=>'<span class="perk">'+esc(p)+'</span>').join('')
+   +(it.mw?'<span class="perk" style="border-color:var(--exotic)">✦ '+esc(it.mw)+'</span>':'')+'</div>';
+  if(it.champ)body+='<p class="muted">Intrinsic: stuns '+cap(it.champ)+' Champions</p>';
+ }else if(it.stats){
+  body=statBars(it.stats,null);
+ }
+ const moveBtns=['vault','c_titan','c_hunter','c_warlock'].filter(d=>d!==it.owner)
+  .filter(d=>d==='vault'||it.itemType==='weapon'||getChar(d).cls===it.classType)
+  .map(d=>'<button class="btn sm" data-act="move" data-id="'+it.id+'" data-to="'+d+'">→ '+(d==='vault'?'Vault':getChar(d).name)+'</button>').join('');
+ openModal('<div class="panel"><div class="phead t-'+it.tier+'"><div class="flex spread"><div><h3>'+esc(it.name)+'</h3>'
+  +'<div class="sub">'+it.tier+' '+esc(it.type)+(it.element?' · '+cap(it.element):'')+(it.classType?' · '+cap(it.classType):'')+' · ✦ '+it.power+' · '+owner+(it.equipped?' (equipped)':'')+'</div></div>'
+  +'<button data-act="close" style="font-size:18px">✕</button></div></div>'
+  +'<div class="pbody">'+body
+  +'<div class="tagbtns">'+Object.keys(TAG_ICON).map(t=>'<button class="'+(it.tag===t?'on':'')+'" data-act="tag" data-id="'+it.id+'" data-v="'+t+'" title="'+cap(t)+'">'+TAG_ICON[t]+'</button>').join('')+'</div>'
+  +'<div class="field" style="margin-top:12px"><label>Notes</label><textarea data-chg="notes" data-id="'+it.id+'" rows="2" style="width:100%" placeholder="e.g. god roll, keep for GM">'+esc(it.notes||'')+'</textarea></div>'
+  +'<div class="actions"><button class="btn primary sm" data-act="equip" data-id="'+it.id+'">⚡ Equip on '+getChar(state.activeChar).name+'</button>'
+  +moveBtns
+  +'<button class="btn sm" data-act="lock" data-id="'+it.id+'">'+(it.locked?'🔓 Unlock':'🔒 Lock')+'</button>'
+  +'<button class="btn sm" data-act="compare" data-id="'+it.id+'">⚖ Compare</button></div>'
+  +'</div></div>');
+}
+function openCompare(id){
+ const it=item(id);
+ const peers=state.items.filter(p=>it.itemType==='weapon'?(p.itemType==='weapon'&&p.type===it.type)
+  :(p.itemType==='armor'&&p.slot===it.slot&&p.classType===it.classType)).sort((a,b)=>b.power-a.power);
+ let head,rows;
+ if(it.itemType==='weapon'){
+  head='<tr><th>Name</th><th>Tier</th><th>Element</th><th>Power</th><th>Perks</th><th>Owner</th></tr>';
+  rows=peers.map(p=>'<tr'+(p.id===id?' style="outline:1px solid var(--accent)"':'')+'><td>'+esc(p.name)+'</td><td>'+p.tier+'</td><td>'+cap(p.element)+'</td><td>'+p.power+'</td><td>'+esc((p.perks||[]).join(', '))+'</td><td>'+(p.owner==='vault'?'Vault':getChar(p.owner).name)+'</td></tr>').join('');
+ }else{
+  const maxes={};STATS.forEach(k=>maxes[k]=Math.max.apply(null,peers.map(p=>p.stats?p.stats[k]||0:0)));
+  head='<tr><th>Name</th><th>Tier</th><th>Power</th>'+STATS.map(k=>'<th>'+STAT_LABEL[k].slice(0,3)+'</th>').join('')+'<th>Total</th></tr>';
+  rows=peers.map(p=>{
+   const tot=p.stats?STATS.reduce((t,k)=>t+(p.stats[k]||0),0):0;
+   return '<tr'+(p.id===id?' style="outline:1px solid var(--accent)"':'')+'><td>'+esc(p.name)+'</td><td>'+p.tier+'</td><td>'+p.power+'</td>'
+    +STATS.map(k=>{const v=p.stats?p.stats[k]||0:0;return '<td style="'+(v&&v===maxes[k]?'color:var(--good);font-weight:700':'')+'">'+v+'</td>';}).join('')
+    +'<td><b>'+tot+'</b></td></tr>';}).join('');
+ }
+ openModal('<div class="panel wide"><div class="phead"><div class="flex spread"><h3>⚖ Compare — '+esc(it.itemType==='weapon'?it.type:cap(it.classType)+' '+SLOT_LABEL[it.slot])+'</h3><button data-act="close" style="font-size:18px">✕</button></div></div>'
+  +'<div class="pbody"><div style="overflow-x:auto"><table><thead>'+head+'</thead><tbody>'+rows+'</tbody></table></div></div></div>');
+}
+function loadoutSlotField(sl,cls,curId){
+ const opts=state.items.filter(i=>i.slot===sl&&(i.itemType==='weapon'||i.classType===cls))
+  .sort((a,b)=>b.power-a.power)
+  .map(i=>'<option value="'+i.id+'"'+(curId===i.id?' selected':'')+'>'+esc(i.name)+' ('+i.power+')</option>').join('');
+ return '<div class="field"><label>'+SLOT_LABEL[sl]+'</label><select data-lslot="'+sl+'"><option value="">— skip —</option>'+opts+'</select></div>';
+}
+function openLoadoutEditor(lid){
+ const l=lid?state.loadouts.find(x=>x.id===lid):null;
+ const cls=l?l.classType:getChar(state.activeChar).cls;
+ const cur={};(l?l.items:[]).forEach(id=>{const i=item(id);if(i)cur[i.slot]=i.id;});
+ openModal('<div class="panel"><div class="phead"><div class="flex spread"><h3>'+(l?'Edit':'New')+' loadout</h3><button data-act="close" style="font-size:18px">✕</button></div></div>'
+  +'<div class="pbody"><div class="field"><label>Name</label><input type="text" id="loName" value="'+esc(l?l.name:'')+'" placeholder="e.g. GM Solar Titan"></div>'
+  +'<div class="field"><label>Class</label><select id="loClass" data-chg="loClass">'+CHARS.map(c=>'<option value="'+c.cls+'"'+(cls===c.cls?' selected':'')+'>'+c.name+'</option>').join('')+'</select></div>'
+  +'<div id="loSlots">'+SLOTS.map(sl=>loadoutSlotField(sl,cls,cur[sl])).join('')+'</div>'
+  +'<div class="actions"><button class="btn primary" data-act="saveLoadoutForm" data-id="'+(l?l.id:'')+'">Save loadout</button></div></div></div>');
+}
+function rebuildLoadoutSlots(){
+ const cls=document.getElementById('loClass').value;
+ document.getElementById('loSlots').innerHTML=SLOTS.map(sl=>loadoutSlotField(sl,cls,null)).join('');
+}
+function openSettings(){
+ openModal('<div class="panel"><div class="phead"><div class="flex spread"><h3>⚙ Settings</h3><button data-act="close" style="font-size:18px">✕</button></div></div>'
+  +'<div class="pbody">'
+  +'<div class="field"><label>Item sort order</label><select data-chg="setSort">'
+  +[['power','Power (high → low)'],['name','Name (A → Z)'],['tier','Rarity, then power']]
+   .map(o=>'<option value="'+o[0]+'"'+(state.settings.sort===o[0]?' selected':'')+'>'+o[1]+'</option>').join('')+'</select></div>'
+  +'<label class="opt"><input type="checkbox" data-chg="autoApply"'+(state.settings.autoApply?' checked':'')+'> Auto-equip loadout when selecting a mission</label>'
+  +'<h3 style="margin-top:18px">Backup</h3>'
+  +'<div class="actions"><button class="btn sm" data-act="exportData">⬇ Export data (JSON)</button>'
+  +'<button class="btn sm" data-act="importClick">⬆ Import backup</button>'
+  +'<button class="btn sm danger" data-act="resetData">↺ Reset demo data</button></div>'
+  +'<h3 style="margin-top:18px">Connect your real Bungie account</h3>'
+  +'<p class="muted">This build runs on demo data so every feature works instantly. Live sync with your actual Destiny 2 characters works exactly like DIM: register an application at <b>bungie.net/en/Application</b> to get an API key + OAuth client, sign in with your Bungie account, and the app can then read your real inventory and equip/transfer items through the Bungie.net API. Everything here — search, loadouts, optimizer, mission auto-equip — is built to run on top of that once connected.</p>'
+  +'</div></div>');
+}
+function toast(msg){
+ const t=document.getElementById('toast');
+ t.textContent=msg;t.style.display='block';
+ clearTimeout(t._h);t._h=setTimeout(()=>{t.style.display='none';},2600);
 }
 
-// ─── TECH GUIDE TOGGLE ───────────────────────────────────────────────────────
-function tgToggle(){
-  const panel=$('tg-panel');
-  const btn=$('tg-toggle');
-  const chev=$('tg-chevron');
-  const open=panel.classList.toggle('open');
-  btn.setAttribute('aria-expanded', open);
-  chev.classList.toggle('open', open);
-  btn.querySelector('.tg-hint').textContent=open?'Click to collapse':'Click to expand';
+/* ============================== events ============================== */
+function selectActivity(id){
+ state.selectedActivity=id;
+ if(state.settings.autoApply){
+  const rec=recommendLoadout(id,state.activeChar);
+  applyLoadout(rec.ids,state.activeChar,rec.act.name+' auto-loadout');
+ }
+ renderView();
 }
-
-// ─── THEME ───────────────────────────────────────────────────────────────────
-function setTheme(t){
-  S.theme=t;
-  document.documentElement.setAttribute('data-theme',t);
-  localStorage.setItem('tcl-theme',t);
-  $('tico').textContent=t==='dark'?'☀️':'🌙';
-  $('tlbl').textContent=t==='dark'?'Light mode':'Dark mode';
+function handleAction(d){
+ switch(d.act){
+  case 'view':state.view=d.v;renderAll();break;
+  case 'char':state.activeChar=d.id;save();renderAll();break;
+  case 'settings':openSettings();break;
+  case 'close':closeModal();break;
+  case 'openItem':openItem(d.id);break;
+  case 'equip':if(equipItem(d.id,state.activeChar)){save();closeModal();renderAll();toast('Equipped');}break;
+  case 'move':if(moveItem(d.id,d.to)){save();closeModal();renderAll();toast('Transferred');}break;
+  case 'lock':{const i=item(d.id);i.locked=!i.locked;save();openItem(d.id);renderView();break;}
+  case 'tag':{const i=item(d.id);i.tag=i.tag===d.v?null:d.v;save();openItem(d.id);renderView();break;}
+  case 'compare':openCompare(d.id);break;
+  case 'newLoadout':openLoadoutEditor(null);break;
+  case 'editLoadout':openLoadoutEditor(d.id);break;
+  case 'delLoadout':state.loadouts=state.loadouts.filter(l=>l.id!==d.id);save();renderView();toast('Loadout deleted');break;
+  case 'applyLoadout':{
+   const l=state.loadouts.find(x=>x.id===d.id);
+   const ch=CHARS.find(c=>c.cls===l.classType)||getChar(state.activeChar);
+   state.activeChar=ch.id;
+   applyLoadout(l.items,ch.id,l.name);break;}
+  case 'saveEquipped':{
+   const c=getChar(state.activeChar);
+   const eq=state.items.filter(i=>i.owner===c.id&&i.equipped).map(i=>i.id);
+   state.loadouts.push({id:uid(),name:c.name+' — current gear',classType:c.cls,items:eq});
+   save();renderView();toast('Saved current equipment as loadout');break;}
+  case 'saveLoadoutForm':{
+   const name=document.getElementById('loName').value.trim()||'Unnamed loadout';
+   const cls=document.getElementById('loClass').value;
+   const ids=Array.prototype.slice.call(overlay.querySelectorAll('[data-lslot]')).map(s=>s.value).filter(Boolean);
+   if(d.id){const l=state.loadouts.find(x=>x.id===d.id);l.name=name;l.classType=cls;l.items=ids;}
+   else state.loadouts.push({id:uid(),name:name,classType:cls,items:ids});
+   save();closeModal();state.view='loadouts';renderAll();toast('Loadout saved');break;}
+  case 'optimize':{
+   const c=getChar(state.activeChar);
+   state.optResult=optimizeArmor(c.cls,state.optWeights,state.optExotic||null);
+   if(!state.optResult)toast('Not enough armor for this class');
+   renderView();break;}
+  case 'applyOpt':applyLoadout(state.optResult.pieces.map(p=>p.id),state.activeChar,'Optimized build');break;
+  case 'saveOpt':{
+   const c=getChar(state.activeChar);
+   state.loadouts.push({id:uid(),name:'Optimized '+c.name+' build',classType:c.cls,items:state.optResult.pieces.map(p=>p.id)});
+   save();toast('Saved as loadout');break;}
+  case 'selectAct':selectActivity(d.id);break;
+  case 'applyRec':{
+   const rec=recommendLoadout(state.selectedActivity,state.activeChar);
+   applyLoadout(rec.ids,state.activeChar,rec.act.name+' loadout');break;}
+  case 'saveRec':{
+   const rec=recommendLoadout(state.selectedActivity,state.activeChar);
+   state.loadouts.push({id:uid(),name:rec.act.name+' — '+rec.char.name,classType:rec.char.cls,items:rec.ids});
+   save();toast('Saved as loadout');break;}
+  case 'sortOrg':{
+   if(state.orgSort.key===d.key)state.orgSort.dir*=-1;
+   else state.orgSort={key:d.key,dir:d.key==='power'?-1:1};
+   renderView();break;}
+  case 'bulkTag':state.orgSel.forEach(id=>{const i=item(id);if(i)i.tag=d.v||null;});save();renderView();toast('Updated '+state.orgSel.size+' items');break;
+  case 'bulkLock':{
+   let any=false;state.orgSel.forEach(id=>{const i=item(id);if(i&&!i.locked)any=true;});
+   state.orgSel.forEach(id=>{const i=item(id);if(i)i.locked=any;});save();renderView();break;}
+  case 'bulkVault':{let n=0;state.orgSel.forEach(id=>{const i=item(id);if(i&&moveItem(i,'vault'))n++;});save();renderView();toast(n+' items sent to vault');break;}
+  case 'bulkClear':state.orgSel.clear();renderView();break;
+  case 'exportData':{
+   const blob=new Blob([JSON.stringify({items:state.items,loadouts:state.loadouts,settings:state.settings},null,1)],{type:'application/json'});
+   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='vault-command-backup.json';a.click();break;}
+  case 'importClick':document.getElementById('importFile').click();break;
+  case 'resetData':
+   if(confirm('Reset all items, tags, notes and loadouts back to fresh demo data?')){
+    localStorage.removeItem(LS);initState();closeModal();renderAll();toast('Demo data reset');
+   }break;
+ }
 }
-
-// ─── INIT ────────────────────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded',()=>{
-  setTheme(S.theme);
-
-  setupFG('fg-size',  'size');
-  setupFG('fg-panel', 'panel');
-  setupFG('fg-refresh','hz');
-  setupFG('fg-year',  'year');
-  setupFG('fg-gaming','gaming');
-
-  $('tg-toggle').addEventListener('click', tgToggle);
-  $('sort-sel').addEventListener('change',e=>{ S.sort=e.target.value; render(); });
-  $('clr-btn').addEventListener('click',clearF);
-
-  $('grid').addEventListener('click',e=>{
-    const b=e.target.closest('[data-cid]');
-    if(b&&!b.disabled) toggleSel(b.dataset.cid);
-  });
-
-  document.addEventListener('click',e=>{
-    const r=e.target.closest('[data-rid]');
-    if(r){ S.sel=S.sel.filter(x=>x!==r.dataset.rid); render(); }
-  });
-
-  $('tclr').addEventListener('click',()=>{ S.sel=[]; render(); });
-  $('tgo').addEventListener('click',()=>{
-    $('csec').scrollIntoView({behavior:'smooth',block:'start'});
-  });
-  $('theme-btn').addEventListener('click',()=>setTheme(S.theme==='dark'?'light':'dark'));
-
-  render();
+document.addEventListener('click',e=>{
+ const el=e.target.closest('[data-act]');
+ if(el){e.preventDefault();handleAction(el.dataset);return;}
+ if(e.target===overlay){closeModal();return;}
+ const tile=e.target.closest('.item[data-id]');
+ if(tile)openItem(tile.dataset.id);
 });
+document.addEventListener('dblclick',e=>{
+ const tile=e.target.closest('.item[data-id]');
+ if(tile){if(equipItem(tile.dataset.id,state.activeChar)){save();renderAll();toast('Equipped');}}
+});
+document.addEventListener('change',e=>{
+ const el=e.target,c=el.dataset.chg;
+ if(!c){
+  if(el.id==='importFile'&&el.files[0]){
+   const fr=new FileReader();
+   fr.onload=()=>{try{
+    const d=JSON.parse(fr.result);
+    if(!Array.isArray(d.items))throw new Error('bad');
+    state.items=d.items;state.loadouts=d.loadouts||[];Object.assign(state.settings,d.settings||{});
+    save();closeModal();renderAll();toast('Backup imported');
+   }catch(err){toast('Invalid backup file');}};
+   fr.readAsText(el.files[0]);el.value='';
+  }
+  return;
+ }
+ switch(c){
+  case 'notes':{const i=item(el.dataset.id);if(i){i.notes=el.value;save();}break;}
+  case 'setSort':state.settings.sort=el.value;save();renderView();break;
+  case 'autoApply':
+   state.settings.autoApply=el.checked;save();
+   if(el.checked&&state.selectedActivity&&state.view==='missions'){
+    const rec=recommendLoadout(state.selectedActivity,state.activeChar);
+    applyLoadout(rec.ids,state.activeChar,rec.act.name+' auto-loadout');
+   }break;
+  case 'optExotic':state.optExotic=el.value;break;
+  case 'optW':state.optWeights[el.dataset.stat]=+el.value;break;
+  case 'loClass':rebuildLoadoutSlots();break;
+  case 'orgSel':if(el.checked)state.orgSel.add(el.dataset.id);else state.orgSel.delete(el.dataset.id);renderView();break;
+ }
+});
+document.getElementById('searchBox').addEventListener('input',e=>{state.q=e.target.value;renderView();});
+document.addEventListener('keydown',e=>{
+ if(e.key==='/'&&document.activeElement.tagName!=='INPUT'&&document.activeElement.tagName!=='TEXTAREA'){
+  e.preventDefault();document.getElementById('searchBox').focus();
+ }
+ if(e.key==='Escape')closeModal();
+});
+/* drag & drop */
+document.addEventListener('dragstart',e=>{
+ const tile=e.target.closest('.item[data-id]');
+ if(tile)e.dataTransfer.setData('text/plain',tile.dataset.id);
+});
+document.addEventListener('dragover',e=>{
+ const z=e.target.closest('[data-drop]');
+ if(z){e.preventDefault();z.classList.add('dragover');}
+});
+document.addEventListener('dragleave',e=>{
+ const z=e.target.closest('[data-drop]');
+ if(z)z.classList.remove('dragover');
+});
+document.addEventListener('drop',e=>{
+ const z=e.target.closest('[data-drop]');
+ if(!z)return;
+ e.preventDefault();z.classList.remove('dragover');
+ const id=e.dataTransfer.getData('text/plain');
+ if(id&&moveItem(id,z.dataset.drop)){save();renderAll();toast('Transferred');}
+});
+
+initState();
+renderAll();
 </script>
 </body>
 </html>
